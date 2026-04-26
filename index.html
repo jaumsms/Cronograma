@@ -4,137 +4,191 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Data Engineer Roadmap</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0A0A0F;
-    --bg2: #0d0d18;
-    --bg3: #111118;
-    --border: #1a1a2e;
-    --text: #ddd;
-    --muted: #555;
-    --muted2: #444;
-    --c1: #00D4AA;
-    --c2: #FF6B35;
-    --c3: #7C6FFF;
-    --c4: #F7C948;
-    --c5: #FF4D6D;
+    --bg: #F0F4FF;
+    --bg2: #ffffff;
+    --bg3: #E8EEFF;
+    --border: #D6E0FF;
+    --blue: #1B4FD8;
+    --blue-light: #3B6EF8;
+    --blue-dark: #0F2E8A;
+    --text: #0F1B3D;
+    --text2: #4A5578;
+    --muted: #8892B0;
+    --c1: #1B4FD8;
+    --c2: #0EA5E9;
+    --c3: #7C3AED;
+    --c4: #059669;
+    --c5: #DC2626;
+    --shadow: 0 1px 3px rgba(27,79,216,0.08), 0 4px 16px rgba(27,79,216,0.06);
+    --shadow-hover: 0 4px 12px rgba(27,79,216,0.15), 0 8px 32px rgba(27,79,216,0.1);
   }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
   }
 
   /* HEADER */
   .header {
-    padding: 48px 24px 32px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(160deg, #0d0d1a 0%, var(--bg) 60%);
+    background: linear-gradient(135deg, #0F2E8A 0%, #1B4FD8 50%, #3B6EF8 100%);
+    padding: 52px 24px 40px;
+    position: relative;
+    overflow: hidden;
   }
-  .header-inner { max-width: 720px; margin: 0 auto; }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .header-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
 
   .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
     font-size: 10px;
-    letter-spacing: .2em;
-    color: var(--c1);
     font-weight: 700;
-    margin-bottom: 16px;
+    letter-spacing: .18em;
+    padding: 5px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
   }
 
   h1 {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: clamp(32px, 7vw, 48px);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(30px, 7vw, 46px);
     font-weight: 800;
     line-height: 1.1;
     color: #fff;
     letter-spacing: -.02em;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
-  h1 span { color: var(--c1); }
+  h1 span { color: #93C5FD; }
 
   .subtitulo {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: .05em;
-    margin-bottom: 28px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: .03em;
+    margin-bottom: 32px;
   }
+
+  /* STATS ROW */
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .stat-pill span { opacity: .65; font-weight: 400; margin-right: 4px; }
 
   /* PROGRESSO GERAL */
   .prog-box {
-    background: var(--bg3);
-    border: 1px solid #1f1f35;
-    border-radius: 12px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px;
     padding: 20px 24px;
+    backdrop-filter: blur(10px);
   }
-  .prog-topo { display: flex; justify-content: space-between; margin-bottom: 10px; }
-  .prog-label { font-size: 11px; color: var(--muted); letter-spacing: .1em; }
-  .prog-pct { font-size: 22px; font-weight: 800; color: #fff; }
-  .barra-fundo { height: 6px; background: #1e1e2e; border-radius: 99px; overflow: hidden; }
+  .prog-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .prog-label { font-size: 11px; color: rgba(255,255,255,0.65); letter-spacing: .1em; font-weight: 600; }
+  .prog-pct { font-size: 26px; font-weight: 800; color: #fff; }
+  .barra-fundo { height: 8px; background: rgba(255,255,255,0.15); border-radius: 99px; overflow: hidden; }
   .barra-fill {
     height: 100%;
     border-radius: 99px;
-    background: linear-gradient(90deg, var(--c1), var(--c3), var(--c5));
-    transition: width .5s ease;
+    background: linear-gradient(90deg, #93C5FD, #60A5FA, #3B82F6);
+    transition: width .6s cubic-bezier(.4,0,.2,1);
   }
-  .prog-sub { font-size: 11px; color: var(--muted2); margin-top: 8px; }
+  .prog-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; }
 
   /* FILTRO */
   .filtro-wrapper {
     max-width: 720px;
     margin: 0 auto;
-    padding: 20px 24px 0;
+    padding: 24px 24px 0;
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
   }
-  .filtro-label { font-size: 11px; color: var(--muted); letter-spacing: .1em; flex-shrink: 0; }
+  .filtro-label { font-size: 11px; color: var(--muted); letter-spacing: .1em; font-weight: 600; flex-shrink: 0; }
   .filtro-scroll { display: flex; gap: 6px; flex-wrap: wrap; }
   .filtro-btn {
-    background: var(--bg3);
-    border: 1px solid #222;
+    background: var(--bg2);
+    border: 1px solid var(--border);
     border-radius: 6px;
-    color: var(--muted);
+    color: var(--text2);
     font-size: 11px;
-    padding: 4px 10px;
+    font-weight: 600;
+    padding: 5px 12px;
     cursor: pointer;
     font-family: inherit;
     transition: all .2s;
+    box-shadow: 0 1px 2px rgba(27,79,216,0.05);
   }
+  .filtro-btn:hover { border-color: var(--blue-light); color: var(--blue); }
   .filtro-btn.ativo {
-    background: #00D4AA22;
-    border-color: var(--c1);
-    color: var(--c1);
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(27,79,216,0.25);
   }
 
   /* CORPO */
   .corpo {
     max-width: 720px;
     margin: 0 auto;
-    padding: 24px 24px 64px;
+    padding: 20px 24px 64px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   /* FASE CARD */
   .fase-card {
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
     background: var(--bg2);
+    box-shadow: var(--shadow);
+    transition: box-shadow .2s;
   }
+  .fase-card:hover { box-shadow: var(--shadow-hover); }
+
   .fase-header {
     width: 100%;
     background: transparent;
     border: none;
     border-left: 4px solid;
-    padding: 20px;
+    padding: 18px 20px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -144,35 +198,39 @@
     gap: 12px;
     transition: background .2s;
   }
-  .fase-header:hover { background: rgba(255,255,255,.02); }
+  .fase-header:hover { background: var(--bg3); }
+
   .fase-esq { flex: 1; }
-  .fase-num { font-size: 10px; font-weight: 800; letter-spacing: .2em; margin-bottom: 4px; }
-  .fase-titulo { font-size: 15px; font-weight: 700; color: #eee; margin-bottom: 2px; font-family: 'IBM Plex Sans', sans-serif; }
+  .fase-num { font-size: 10px; font-weight: 700; letter-spacing: .2em; margin-bottom: 3px; }
+  .fase-titulo { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; font-family: 'Plus Jakarta Sans', sans-serif; }
   .fase-semanas { font-size: 11px; color: var(--muted); }
+
   .fase-dir { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 64px; }
-  .fase-pct { font-size: 18px; font-weight: 800; }
-  .mini-barra-fundo { width: 60px; height: 4px; background: #1e1e2e; border-radius: 99px; overflow: hidden; }
+  .fase-pct { font-size: 17px; font-weight: 800; }
+  .mini-barra-fundo { width: 60px; height: 4px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
   .mini-barra-fill { height: 100%; border-radius: 99px; transition: width .4s ease; }
   .chevron { font-size: 10px; color: var(--muted); transition: transform .3s ease; }
   .chevron.aberto { transform: rotate(180deg); }
 
   /* CORPO DA FASE */
-  .fase-corpo { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .fase-corpo { padding: 0 16px 16px; display: flex; flex-direction: column; }
   .fase-corpo.hidden { display: none; }
+
   .sem-grupo-label {
     font-size: 10px;
-    color: var(--muted2);
+    color: var(--muted);
     letter-spacing: .15em;
     font-weight: 700;
-    margin: 12px 0 4px 4px;
+    margin: 14px 0 6px 4px;
+    text-transform: uppercase;
   }
 
   /* TÓPICO ITEM */
   .topico-item {
     width: 100%;
-    background: rgba(255,255,255,.03);
-    border: 1px solid transparent;
-    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
     padding: 12px 14px;
     cursor: pointer;
     display: flex;
@@ -181,40 +239,46 @@
     text-align: left;
     font-family: inherit;
     transition: all .2s ease;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
-  .topico-item:hover { background: rgba(255,255,255,.06); }
-  .topico-item.feito { border-left-width: 3px; border-left-style: solid; }
+  .topico-item:hover { background: var(--bg3); border-color: #BFCFFF; transform: translateX(2px); }
+  .topico-item.feito { border-left-width: 3px; border-left-style: solid; background: #fff; }
+
   .check-box {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 2px solid #444;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 1px;
     transition: all .2s;
     font-size: 11px;
     font-weight: 900;
-    color: #000;
+    color: #fff;
   }
-  .topico-texto { font-size: 13px; line-height: 1.5; color: #ddd; transition: all .2s; }
-  .topico-item.feito .topico-texto { text-decoration: line-through; color: #555; }
-  .topico-fase-label { font-size: 10px; letter-spacing: .1em; font-weight: 700; margin-bottom: 2px; }
+
+  .topico-texto { font-size: 13px; line-height: 1.5; color: var(--text2); transition: all .2s; font-weight: 500; }
+  .topico-item.feito .topico-texto { text-decoration: line-through; color: var(--muted); }
+  .topico-fase-label { font-size: 10px; letter-spacing: .1em; font-weight: 700; margin-bottom: 2px; text-transform: uppercase; }
 
   /* SEMANA VIEW */
-  .semana-view { display: flex; flex-direction: column; gap: 8px; }
-  .semana-titulo { font-size: 12px; color: var(--muted); letter-spacing: .15em; font-weight: 700; margin-bottom: 8px; }
+  .semana-view { display: flex; flex-direction: column; gap: 6px; }
+  .semana-titulo {
+    font-size: 13px; color: var(--text2); letter-spacing: .05em;
+    font-weight: 700; margin-bottom: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
 
   /* FOOTER */
   footer {
     text-align: center;
-    font-size: 10px;
-    color: #333;
-    padding: 0 24px 32px;
-    letter-spacing: .1em;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 0 24px 40px;
+    letter-spacing: .05em;
   }
 </style>
 </head>
@@ -225,6 +289,11 @@
     <div class="tag">6 MESES · ANALISTA → ENGENHEIRO DE DADOS</div>
     <h1>Data Engineer<br><span>Roadmap</span></h1>
     <p class="subtitulo">S&OP Analyst → Data Engineer · AWS · Pipelines · Spark</p>
+    <div class="stats-row">
+      <div class="stat-pill"><span>Duração</span>24 semanas</div>
+      <div class="stat-pill"><span>Tópicos</span>44 itens</div>
+      <div class="stat-pill"><span>Fases</span>5 etapas</div>
+    </div>
     <div class="prog-box">
       <div class="prog-topo">
         <span class="prog-label">PROGRESSO GERAL</span>
@@ -237,16 +306,16 @@
 </div>
 
 <div class="filtro-wrapper">
-  <span class="filtro-label">Filtrar por semana:</span>
+  <span class="filtro-label">SEMANA:</span>
   <div class="filtro-scroll" id="filtro-scroll"></div>
 </div>
 
 <div class="corpo" id="corpo"></div>
 
-<footer>Construído para a sua jornada · Analista S&OP → Engenheiro de Dados</footer>
+<footer>Sua jornada · Analista S&OP → Engenheiro de Dados</footer>
 
 <script>
-const COR = ["#00D4AA","#FF6B35","#7C6FFF","#F7C948","#FF4D6D"];
+const COR = ["#1B4FD8","#0EA5E9","#7C3AED","#059669","#DC2626"];
 
 const ROADMAP = [
   {
@@ -320,7 +389,7 @@ const ROADMAP = [
   },
 ];
 
-const STORAGE_KEY = "de_roadmap_v1";
+const STORAGE_KEY = "de_roadmap_v2";
 let progress = {};
 try { progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch {}
 
@@ -334,26 +403,21 @@ function salvar() {
 function totalFeitos() {
   return ROADMAP.flatMap(f => f.topicos).filter(t => progress[t.id]).length;
 }
-function totalItens() {
-  return ROADMAP.flatMap(f => f.topicos).length;
-}
 
 function atualizarProgresso() {
   const feitos = totalFeitos();
-  const total = totalItens();
+  const total = 44;
   const pct = Math.round((feitos / total) * 100);
   document.getElementById("pct-geral").textContent = pct + "%";
   document.getElementById("barra-geral").style.width = pct + "%";
   document.getElementById("prog-sub").textContent = feitos + " de " + total + " tópicos concluídos";
-
-  // Mini barras por fase
   ROADMAP.forEach(fase => {
-    const feitos = fase.topicos.filter(t => progress[t.id]).length;
-    const pct = Math.round((feitos / fase.topicos.length) * 100);
-    const pctEl = document.getElementById("fase-pct-" + fase.fase);
-    const barEl = document.getElementById("fase-bar-" + fase.fase);
-    if (pctEl) pctEl.textContent = pct + "%";
-    if (barEl) barEl.style.width = pct + "%";
+    const f = fase.topicos.filter(t => progress[t.id]).length;
+    const p = Math.round((f / fase.topicos.length) * 100);
+    const pEl = document.getElementById("fase-pct-" + fase.fase);
+    const bEl = document.getElementById("fase-bar-" + fase.fase);
+    if (pEl) pEl.textContent = p + "%";
+    if (bEl) bEl.style.width = p + "%";
   });
 }
 
@@ -368,61 +432,55 @@ function toggleItem(id) {
   if (progress[id]) {
     btn.classList.add("feito");
     btn.style.borderLeftColor = cor;
-    btn.style.background = cor + "12";
     checkBox.style.background = cor;
     checkBox.style.borderColor = cor;
     checkBox.textContent = "✓";
     texto.style.textDecoration = "line-through";
-    texto.style.color = "#555";
+    texto.style.color = "#8892B0";
   } else {
     btn.classList.remove("feito");
-    btn.style.borderLeftColor = "transparent";
-    btn.style.background = "rgba(255,255,255,0.03)";
+    btn.style.borderLeftColor = "#D6E0FF";
     checkBox.style.background = "transparent";
-    checkBox.style.borderColor = "#444";
+    checkBox.style.borderColor = "#D6E0FF";
     checkBox.textContent = "";
     texto.style.textDecoration = "none";
-    texto.style.color = "#ddd";
+    texto.style.color = "#4A5578";
   }
   atualizarProgresso();
 }
 
 function criarTopicoEl(topico, cor, showFase, faseTitulo) {
   const btn = document.createElement("button");
-  btn.className = "topico-item" + (progress[topico.id] ? " feito" : "");
+  const feito = !!progress[topico.id];
+  btn.className = "topico-item" + (feito ? " feito" : "");
   btn.dataset.id = topico.id;
   btn.dataset.cor = cor;
-
-  const feito = !!progress[topico.id];
-  if (feito) {
-    btn.style.borderLeftColor = cor;
-    btn.style.background = cor + "12";
-  }
+  if (feito) btn.style.borderLeftColor = cor;
 
   const check = document.createElement("div");
   check.className = "check-box";
-  check.style.borderColor = feito ? cor : "#444";
+  check.style.borderColor = feito ? cor : "#D6E0FF";
   check.style.background = feito ? cor : "transparent";
   check.textContent = feito ? "✓" : "";
 
-  const textoWrapper = document.createElement("div");
+  const wrap = document.createElement("div");
 
   if (showFase) {
-    const faseLabel = document.createElement("div");
-    faseLabel.className = "topico-fase-label";
-    faseLabel.style.color = cor;
-    faseLabel.textContent = faseTitulo;
-    textoWrapper.appendChild(faseLabel);
+    const fl = document.createElement("div");
+    fl.className = "topico-fase-label";
+    fl.style.color = cor;
+    fl.textContent = faseTitulo;
+    wrap.appendChild(fl);
   }
 
-  const texto = document.createElement("div");
-  texto.className = "topico-texto";
-  texto.textContent = topico.titulo;
-  if (feito) { texto.style.textDecoration = "line-through"; texto.style.color = "#555"; }
-  textoWrapper.appendChild(texto);
+  const txt = document.createElement("div");
+  txt.className = "topico-texto";
+  txt.textContent = topico.titulo;
+  if (feito) { txt.style.textDecoration = "line-through"; txt.style.color = "#8892B0"; }
+  wrap.appendChild(txt);
 
   btn.appendChild(check);
-  btn.appendChild(textoWrapper);
+  btn.appendChild(wrap);
   btn.addEventListener("click", () => toggleItem(topico.id));
   return btn;
 }
@@ -430,7 +488,6 @@ function criarTopicoEl(topico, cor, showFase, faseTitulo) {
 function renderFiltro() {
   const scroll = document.getElementById("filtro-scroll");
   scroll.innerHTML = "";
-
   const semanas = [...new Set(ROADMAP.flatMap(f => f.topicos.map(t => t.semana)))].sort((a,b)=>a-b);
 
   const btnAll = document.createElement("button");
@@ -472,7 +529,6 @@ function renderCorpo() {
     const card = document.createElement("div");
     card.className = "fase-card";
 
-    // Header
     const header = document.createElement("button");
     header.className = "fase-header";
     header.style.borderLeftColor = fase.cor;
@@ -496,7 +552,6 @@ function renderCorpo() {
       </div>
     `;
 
-    // Corpo
     const corpo2 = document.createElement("div");
     corpo2.className = "fase-corpo" + (aberta ? "" : " hidden");
 
@@ -532,3 +587,4 @@ render();
 </script>
 </body>
 </html>
+
