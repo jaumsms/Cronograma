@@ -1,590 +1,1211 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Data Engineer Roadmap</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F0F4FF;--bg2:#fff;--bg3:#E8EEFF;--border:#D6E0FF;
+  --blue:#1B4FD8;--blue2:#3B6EF8;--bluedark:#0F2E8A;
+  --text:#0F1B3D;--text2:#4A5578;--muted:#8892B0;
+  --green:#059669;--amber:#D97706;--red:#DC2626;--purple:#7C3AED;--sky:#0EA5E9;
+  --shadow:0 1px 3px rgba(27,79,216,.08),0 4px 16px rgba(27,79,216,.06);
+  --shadowhov:0 4px 12px rgba(27,79,216,.15),0 8px 32px rgba(27,79,216,.1);
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
 
-  :root {
-    --bg: #F0F4FF;
-    --bg2: #ffffff;
-    --bg3: #E8EEFF;
-    --border: #D6E0FF;
-    --blue: #1B4FD8;
-    --blue-light: #3B6EF8;
-    --blue-dark: #0F2E8A;
-    --text: #0F1B3D;
-    --text2: #4A5578;
-    --muted: #8892B0;
-    --c1: #1B4FD8;
-    --c2: #0EA5E9;
-    --c3: #7C3AED;
-    --c4: #059669;
-    --c5: #DC2626;
-    --shadow: 0 1px 3px rgba(27,79,216,0.08), 0 4px 16px rgba(27,79,216,0.06);
-    --shadow-hover: 0 4px 12px rgba(27,79,216,0.15), 0 8px 32px rgba(27,79,216,0.1);
-  }
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:block;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-  }
+/* ── NAV BAR ── */
+.navbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.nav-brand{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--blue);cursor:pointer;flex-shrink:0;}
+.nav-arrows{display:flex;gap:6px;}
+.nav-btn{
+  background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  width:34px;height:34px;cursor:pointer;font-size:15px;color:var(--text2);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:inherit;
+}
+.nav-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.nav-phase-dots{display:flex;gap:6px;align-items:center;}
+.nav-dot{
+  width:28px;height:6px;border-radius:99px;background:var(--bg3);
+  border:1px solid var(--border);cursor:pointer;transition:all .2s;
+}
+.nav-dot.active{background:var(--blue);border-color:var(--blue);}
+.nav-dot.home{width:6px;border-radius:99px;}
 
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg, #0F2E8A 0%, #1B4FD8 50%, #3B6EF8 100%);
-    padding: 52px 24px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 300px; height: 300px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 50%;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; left: -40px;
-    width: 200px; height: 200px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 50%;
-  }
-  .header-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+/* ── HOME HEADER ── */
+.home-header{
+  background:linear-gradient(135deg,#0F2E8A 0%,#1B4FD8 55%,#3B6EF8 100%);
+  padding:52px 24px 40px;position:relative;overflow:hidden;
+}
+.home-header::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,.05);border-radius:50%;}
+.home-header::after{content:'';position:absolute;bottom:-80px;left:-40px;width:220px;height:220px;background:rgba(255,255,255,.04);border-radius:50%;}
+.hh-inner{max-width:720px;margin:0 auto;position:relative;z-index:1;}
+.tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:10px;font-weight:700;letter-spacing:.18em;padding:5px 12px;border-radius:99px;margin-bottom:18px;}
+h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,7vw,44px);font-weight:800;line-height:1.1;color:#fff;letter-spacing:-.02em;margin-bottom:8px;}
+h1 span{color:#93C5FD;}
+.subtitulo{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:28px;}
 
-  .tag {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .18em;
-    padding: 5px 12px;
-    border-radius: 99px;
-    margin-bottom: 20px;
-  }
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+@media(min-width:480px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+.stat-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:14px 16px;text-align:center;}
+.stat-card-val{font-size:22px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;}
+.stat-card-val.amber{color:#FCD34D;}
+.stat-card-label{font-size:10px;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:.08em;}
+.stat-card-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;}
 
-  h1 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: clamp(30px, 7vw, 46px);
-    font-weight: 800;
-    line-height: 1.1;
-    color: #fff;
-    letter-spacing: -.02em;
-    margin-bottom: 10px;
-  }
-  h1 span { color: #93C5FD; }
+/* PROG BOX */
+.prog-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 22px;}
+.prog-topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.prog-label{font-size:11px;color:rgba(255,255,255,.65);letter-spacing:.1em;font-weight:600;}
+.prog-pct{font-size:24px;font-weight:800;color:#fff;}
+.barra-fundo{height:8px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden;}
+.barra-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#93C5FD,#60A5FA,#3B82F6);transition:width .6s cubic-bezier(.4,0,.2,1);}
+.prog-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;}
 
-  .subtitulo {
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: .03em;
-    margin-bottom: 32px;
-  }
+/* TRACKER + STREAK */
+.tracker-row{max-width:720px;margin:16px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tracker-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);}
+.tc-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.12em;margin-bottom:6px;}
+.tc-val{font-size:19px;font-weight:800;color:var(--blue);line-height:1;}
+.tc-val.green{color:var(--green);}
+.tc-sub{font-size:11px;color:var(--muted);margin-top:4px;}
 
-  /* STATS ROW */
-  .stats-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-  .stat-pill {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    padding: 8px 14px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .stat-pill span { opacity: .65; font-weight: 400; margin-right: 4px; }
+.streak-section{max-width:720px;margin:12px auto 0;padding:0 24px;}
+.streak-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);}
+.streak-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.streak-title{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.12em;}
+.streak-count{font-size:13px;font-weight:800;color:var(--amber);}
+.streak-dots{display:flex;gap:5px;flex-wrap:wrap;}
+.sdot{width:28px;height:28px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);font-weight:600;}
+.sdot.ativo{background:#FCD34D;border-color:#F59E0B;color:#92400E;}
+.sdot.hoje{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:800;}
+.marcar-btn{margin-top:12px;width:100%;background:linear-gradient(135deg,#1B4FD8,#3B6EF8);color:#fff;border:none;border-radius:8px;padding:10px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.marcar-btn:hover{opacity:.9;}
+.marcar-btn:disabled{background:#D1D5DB;color:#9CA3AF;cursor:not-allowed;}
 
-  /* PROGRESSO GERAL */
-  .prog-box {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px;
-    padding: 20px 24px;
-    backdrop-filter: blur(10px);
-  }
-  .prog-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .prog-label { font-size: 11px; color: rgba(255,255,255,0.65); letter-spacing: .1em; font-weight: 600; }
-  .prog-pct { font-size: 26px; font-weight: 800; color: #fff; }
-  .barra-fundo { height: 8px; background: rgba(255,255,255,0.15); border-radius: 99px; overflow: hidden; }
-  .barra-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #93C5FD, #60A5FA, #3B82F6);
-    transition: width .6s cubic-bezier(.4,0,.2,1);
-  }
-  .prog-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; }
+/* HOME PHASES GRID */
+.phases-section{max-width:720px;margin:20px auto 0;padding:0 24px 48px;}
+.phases-title{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.15em;margin-bottom:12px;}
+.phases-grid{display:flex;flex-direction:column;gap:10px;}
+.phase-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--shadow);cursor:pointer;
+  display:flex;align-items:center;gap:16px;
+  border-left:4px solid;transition:all .2s;
+}
+.phase-card:hover{box-shadow:var(--shadowhov);transform:translateX(3px);}
+.pc-icon{font-size:24px;flex-shrink:0;}
+.pc-body{flex:1;}
+.pc-fase{font-size:10px;font-weight:700;letter-spacing:.2em;margin-bottom:3px;}
+.pc-titulo{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;font-family:'Plus Jakarta Sans',sans-serif;}
+.pc-semanas{font-size:11px;color:var(--muted);}
+.pc-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.pc-pct{font-size:16px;font-weight:800;}
+.pc-mini-barra{width:56px;height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;}
+.pc-mini-fill{height:100%;border-radius:99px;transition:width .4s;}
+.pc-arrow{font-size:14px;color:var(--muted);}
 
-  /* FILTRO */
-  .filtro-wrapper {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 24px 24px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .filtro-label { font-size: 11px; color: var(--muted); letter-spacing: .1em; font-weight: 600; flex-shrink: 0; }
-  .filtro-scroll { display: flex; gap: 6px; flex-wrap: wrap; }
-  .filtro-btn {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text2);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 5px 12px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all .2s;
-    box-shadow: 0 1px 2px rgba(27,79,216,0.05);
-  }
-  .filtro-btn:hover { border-color: var(--blue-light); color: var(--blue); }
-  .filtro-btn.ativo {
-    background: var(--blue);
-    border-color: var(--blue);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(27,79,216,0.25);
-  }
+/* ── PHASE PAGE ── */
+.phase-header{
+  padding:40px 24px 32px;position:relative;overflow:hidden;
+}
+.phase-header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,.06);border-radius:50%;}
+.ph-inner{max-width:720px;margin:0 auto;position:relative;z-index:1;}
+.ph-tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:10px;font-weight:700;letter-spacing:.15em;padding:4px 10px;border-radius:99px;margin-bottom:14px;}
+.ph-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15;}
+.ph-sub{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:20px;}
+.ph-prog-row{display:flex;align-items:center;gap:12px;}
+.ph-barra-fundo{flex:1;height:6px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;}
+.ph-barra-fill{height:100%;border-radius:99px;background:rgba(255,255,255,.8);transition:width .5s ease;}
+.ph-pct{font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
 
-  /* CORPO */
-  .corpo {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 20px 24px 64px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+/* TOPICS LIST */
+.topics-section{max-width:720px;margin:0 auto;padding:20px 24px 64px;display:flex;flex-direction:column;gap:10px;}
 
-  /* FASE CARD */
-  .fase-card {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    background: var(--bg2);
-    box-shadow: var(--shadow);
-    transition: box-shadow .2s;
-  }
-  .fase-card:hover { box-shadow: var(--shadow-hover); }
+.topic-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s;}
+.topic-card:hover{box-shadow:var(--shadowhov);}
 
-  .fase-header {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-left: 4px solid;
-    padding: 18px 20px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: left;
-    font-family: inherit;
-    gap: 12px;
-    transition: background .2s;
-  }
-  .fase-header:hover { background: var(--bg3); }
+.topic-header{
+  width:100%;background:transparent;border:none;border-left:4px solid;
+  padding:16px 18px;cursor:pointer;display:flex;align-items:center;
+  gap:12px;text-align:left;font-family:inherit;transition:background .2s;
+}
+.topic-header:hover{background:var(--bg3);}
+.th-check{width:22px;height:22px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;font-weight:900;color:#fff;}
+.th-body{flex:1;}
+.th-semana{font-size:10px;font-weight:700;letter-spacing:.12em;margin-bottom:2px;}
+.th-titulo{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;}
+.topic-card.done .th-titulo{text-decoration:line-through;color:var(--muted);}
+.th-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.th-prog-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:var(--bg3);color:var(--muted);}
+.th-arrow{font-size:12px;color:var(--muted);transition:transform .3s;}
+.th-arrow.open{transform:rotate(90deg);}
 
-  .fase-esq { flex: 1; }
-  .fase-num { font-size: 10px; font-weight: 700; letter-spacing: .2em; margin-bottom: 3px; }
-  .fase-titulo { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; font-family: 'Plus Jakarta Sans', sans-serif; }
-  .fase-semanas { font-size: 11px; color: var(--muted); }
+/* SUBTOPICS */
+.topic-body{display:none;padding:0 18px 16px;}
+.topic-body.open{display:block;}
 
-  .fase-dir { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 64px; }
-  .fase-pct { font-size: 17px; font-weight: 800; }
-  .mini-barra-fundo { width: 60px; height: 4px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
-  .mini-barra-fill { height: 100%; border-radius: 99px; transition: width .4s ease; }
-  .chevron { font-size: 10px; color: var(--muted); transition: transform .3s ease; }
-  .chevron.aberto { transform: rotate(180deg); }
+.subtopic-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.step-item{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;
+  transition:all .2s;font-family:inherit;width:100%;text-align:left;
+}
+.step-item:hover{background:var(--bg3);border-color:#BFCFFF;}
+.step-item.done{background:#fff;border-left:3px solid;}
+.step-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;font-weight:900;color:#fff;transition:all .2s;}
+.step-content{flex:1;}
+.step-label{font-size:10px;font-weight:700;letter-spacing:.1em;margin-bottom:2px;}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.45;font-weight:500;}
+.step-item.done .step-desc{text-decoration:line-through;color:var(--muted);}
 
-  /* CORPO DA FASE */
-  .fase-corpo { padding: 0 16px 16px; display: flex; flex-direction: column; }
-  .fase-corpo.hidden { display: none; }
+/* RESOURCES */
+.resources-title{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.12em;margin-bottom:8px;margin-top:4px;}
+.resources-list{display:flex;flex-direction:column;gap:6px;}
+.resource-link{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:10px 12px;text-decoration:none;transition:all .2s;
+}
+.resource-link:hover{background:var(--bg3);border-color:#BFCFFF;transform:translateX(2px);}
+.rl-icon{font-size:16px;flex-shrink:0;}
+.rl-body{flex:1;}
+.rl-type{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--muted);}
+.rl-name{font-size:12px;font-weight:600;color:var(--blue);}
+.rl-arrow{font-size:11px;color:var(--muted);}
 
-  .sem-grupo-label {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: .15em;
-    font-weight: 700;
-    margin: 14px 0 6px 4px;
-    text-transform: uppercase;
-  }
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,27,61,.5);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px;backdrop-filter:blur(4px);}
+.modal-overlay.hidden{display:none;}
+.modal{background:var(--bg2);border-radius:16px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(15,27,61,.3);}
+.modal h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.modal p{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
+.modal label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;display:block;margin-bottom:6px;}
+.modal input[type=date]{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:var(--bg);outline:none;}
+.modal input[type=date]:focus{border-color:var(--blue);}
+.modal-btn{margin-top:16px;width:100%;background:linear-gradient(135deg,#1B4FD8,#3B6EF8);color:#fff;border:none;border-radius:10px;padding:13px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+.modal-btn:hover{opacity:.9;}
 
-  /* TÓPICO ITEM */
-  .topico-item {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    text-align: left;
-    font-family: inherit;
-    transition: all .2s ease;
-    margin-bottom: 6px;
-  }
-  .topico-item:hover { background: var(--bg3); border-color: #BFCFFF; transform: translateX(2px); }
-  .topico-item.feito { border-left-width: 3px; border-left-style: solid; background: #fff; }
-
-  .check-box {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    transition: all .2s;
-    font-size: 11px;
-    font-weight: 900;
-    color: #fff;
-  }
-
-  .topico-texto { font-size: 13px; line-height: 1.5; color: var(--text2); transition: all .2s; font-weight: 500; }
-  .topico-item.feito .topico-texto { text-decoration: line-through; color: var(--muted); }
-  .topico-fase-label { font-size: 10px; letter-spacing: .1em; font-weight: 700; margin-bottom: 2px; text-transform: uppercase; }
-
-  /* SEMANA VIEW */
-  .semana-view { display: flex; flex-direction: column; gap: 6px; }
-  .semana-titulo {
-    font-size: 13px; color: var(--text2); letter-spacing: .05em;
-    font-weight: 700; margin-bottom: 12px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-  }
-
-  /* FOOTER */
-  footer {
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    padding: 0 24px 40px;
-    letter-spacing: .05em;
-  }
+footer{text-align:center;font-size:11px;color:var(--muted);padding:0 24px 40px;letter-spacing:.05em;}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="tag">6 MESES · ANALISTA → ENGENHEIRO DE DADOS</div>
-    <h1>Data Engineer<br><span>Roadmap</span></h1>
-    <p class="subtitulo">S&OP Analyst → Data Engineer · AWS · Pipelines · Spark</p>
-    <div class="stats-row">
-      <div class="stat-pill"><span>Duração</span>24 semanas</div>
-      <div class="stat-pill"><span>Tópicos</span>44 itens</div>
-      <div class="stat-pill"><span>Fases</span>5 etapas</div>
-    </div>
-    <div class="prog-box">
-      <div class="prog-topo">
-        <span class="prog-label">PROGRESSO GERAL</span>
-        <span class="prog-pct" id="pct-geral">0%</span>
-      </div>
-      <div class="barra-fundo"><div class="barra-fill" id="barra-geral" style="width:0%"></div></div>
-      <div class="prog-sub" id="prog-sub">0 de 44 tópicos concluídos</div>
-    </div>
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <h2>📅 Quando você começa?</h2>
+    <p>Defina a data de início do seu roadmap para calcular a previsão de conclusão.</p>
+    <label>DATA DE INÍCIO</label>
+    <input type="date" id="data-input"/>
+    <button class="modal-btn" onclick="salvarDataInicio()">Começar o Roadmap →</button>
   </div>
 </div>
 
-<div class="filtro-wrapper">
-  <span class="filtro-label">SEMANA:</span>
-  <div class="filtro-scroll" id="filtro-scroll"></div>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-brand" onclick="irPara(0)">⚡ DE Roadmap</div>
+  <div class="nav-phase-dots" id="nav-dots"></div>
+  <div class="nav-arrows">
+    <button class="nav-btn" id="btn-prev" onclick="navPrev()">←</button>
+    <button class="nav-btn" id="btn-next" onclick="navNext()">→</button>
+  </div>
+</nav>
+
+<!-- PAGE 0: HOME -->
+<div class="page active" id="page-0">
+  <div class="home-header">
+    <div class="hh-inner">
+      <div class="tag">6 MESES · ANALISTA → ENGENHEIRO DE DADOS</div>
+      <h1>Data Engineer<br><span>Roadmap</span></h1>
+      <p class="subtitulo">S&OP Analyst → Data Engineer · AWS · Pipelines · Spark</p>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-card-val" id="stat-pct">0%</div><div class="stat-card-label">CONCLUÍDO</div><div class="stat-card-sub" id="stat-feitos">0/44 tópicos</div></div>
+        <div class="stat-card"><div class="stat-card-val amber" id="stat-streak">0 🔥</div><div class="stat-card-label">STREAK</div><div class="stat-card-sub">dias seguidos</div></div>
+        <div class="stat-card"><div class="stat-card-val" id="stat-dias">—</div><div class="stat-card-label">DIAS DE JORNADA</div><div class="stat-card-sub" id="stat-inicio-lbl">defina a data</div></div>
+        <div class="stat-card"><div class="stat-card-val" id="stat-prev">—</div><div class="stat-card-label">PREVISÃO</div><div class="stat-card-sub">conclusão estimada</div></div>
+      </div>
+      <div class="prog-box">
+        <div class="prog-topo"><span class="prog-label">PROGRESSO GERAL</span><span class="prog-pct" id="pct-geral">0%</span></div>
+        <div class="barra-fundo"><div class="barra-fill" id="barra-geral" style="width:0%"></div></div>
+        <div class="prog-sub" id="prog-sub">0 de 44 tópicos concluídos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tracker-row">
+    <div class="tracker-card">
+      <div class="tc-label">📍 DATA DE INÍCIO</div>
+      <div class="tc-val" id="tc-inicio">—</div>
+      <div class="tc-sub" id="tc-inicio-sub"><span style="color:var(--blue);cursor:pointer;font-weight:600;" onclick="abrirModal()">Definir data →</span></div>
+    </div>
+    <div class="tracker-card">
+      <div class="tc-label">🎯 PREVISÃO DE CONCLUSÃO</div>
+      <div class="tc-val green" id="tc-conclusao">—</div>
+      <div class="tc-sub" id="tc-conclusao-sub">baseado em 24 semanas</div>
+    </div>
+  </div>
+
+  <div class="streak-section">
+    <div class="streak-card">
+      <div class="streak-hdr">
+        <span class="streak-title">🔥 STREAK — ÚLTIMOS 14 DIAS</span>
+        <span class="streak-count" id="streak-count">0 dias seguidos</span>
+      </div>
+      <div class="streak-dots" id="streak-dots"></div>
+      <button class="marcar-btn" id="marcar-btn" onclick="marcarHoje()">✅ Marcar hoje como estudado</button>
+    </div>
+  </div>
+
+  <div class="phases-section">
+    <div class="phases-title">FASES DO ROADMAP</div>
+    <div class="phases-grid" id="phases-grid"></div>
+  </div>
 </div>
 
-<div class="corpo" id="corpo"></div>
-
-<footer>Sua jornada · Analista S&OP → Engenheiro de Dados</footer>
+<!-- PAGES 1-5: PHASES -->
+<div class="page" id="page-1"></div>
+<div class="page" id="page-2"></div>
+<div class="page" id="page-3"></div>
+<div class="page" id="page-4"></div>
+<div class="page" id="page-5"></div>
 
 <script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
 const COR = ["#1B4FD8","#0EA5E9","#7C3AED","#059669","#DC2626"];
+const ICON = ["🧱","☁️","⚙️","⚡","🚀"];
 
 const ROADMAP = [
-  {
-    fase:1, titulo:"Fundamentos de Engenharia de Dados", semanas:"Semanas 1–3", cor:COR[0],
+  { fase:1, titulo:"Fundamentos de Engenharia de Dados", semanas:"Semanas 1–3", cor:COR[0], icon:ICON[0],
     topicos:[
-      {id:"1-1",semana:1,titulo:"Modelagem de dados (Star Schema, Snowflake)"},
-      {id:"1-2",semana:1,titulo:"Data Warehouse vs Data Lake vs Lakehouse"},
-      {id:"1-3",semana:2,titulo:"Conceitos de ETL/ELT e pipelines de dados"},
-      {id:"1-4",semana:2,titulo:"Formatos de arquivo: Parquet, Avro, ORC, JSON"},
-      {id:"1-5",semana:3,titulo:"SQL avançado: CTEs, Window Functions, Partitioning"},
-      {id:"1-6",semana:3,titulo:"Python para dados: Pandas avançado, type hints, virtual envs"},
+      { id:"1-1", semana:1, titulo:"Modelagem de dados (Star Schema, Snowflake)",
+        steps:[
+          {label:"TEORIA",desc:"Entenda o que são esquemas dimensionais e por que existem"},
+          {label:"VÍDEOS/RECURSOS",desc:"Assista aulas sobre Star Schema vs Snowflake Schema"},
+          {label:"EXERCÍCIO",desc:"Modele um DW simples de vendas com pelo menos 3 dimensões"},
+          {label:"FEITO",desc:"Consegue explicar a diferença entre os dois modelos com segurança"},
+        ],
+        recursos:[
+          {tipo:"YouTube",nome:"Star Schema vs Snowflake – Kahan Data Solutions",url:"https://www.youtube.com/results?search_query=star+schema+vs+snowflake+schema"},
+          {tipo:"Artigo",nome:"Kimball Dimensional Modeling – dbt Blog",url:"https://www.getdbt.com/analytics-engineering/modular-data-modeling-technique/"},
+        ]
+      },
+      { id:"1-2", semana:1, titulo:"Data Warehouse vs Data Lake vs Lakehouse",
+        steps:[
+          {label:"TEORIA",desc:"Compreenda as diferenças arquiteturais entre os três conceitos"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise casos de uso reais de cada abordagem"},
+          {label:"EXERCÍCIO",desc:"Escreva um resumo de 1 página explicando quando usar cada um"},
+          {label:"FEITO",desc:"Consegue recomendar a arquitetura certa dado um cenário de negócio"},
+        ],
+        recursos:[
+          {tipo:"YouTube",nome:"Data Warehouse vs Data Lake vs Lakehouse – IBM Tech",url:"https://www.youtube.com/results?search_query=data+warehouse+vs+data+lake+vs+lakehouse"},
+          {tipo:"Artigo",nome:"Databricks: O que é Lakehouse?",url:"https://www.databricks.com/glossary/data-lakehouse"},
+        ]
+      },
+      { id:"1-3", semana:2, titulo:"Conceitos de ETL/ELT e pipelines de dados",
+        steps:[
+          {label:"TEORIA",desc:"Entenda a diferença entre ETL e ELT e quando usar cada um"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore ferramentas como dbt, Fivetran e Airbyte"},
+          {label:"EXERCÍCIO",desc:"Crie um pipeline ELT simples em Python lendo CSV e gravando em banco"},
+          {label:"FEITO",desc:"Consegue desenhar um pipeline ELT do zero para um caso real"},
+        ],
+        recursos:[
+          {tipo:"YouTube",nome:"ETL vs ELT – explicado com exemplos",url:"https://www.youtube.com/results?search_query=ETL+vs+ELT+data+engineering"},
+          {tipo:"Docs",nome:"Airbyte – Open Source ELT",url:"https://docs.airbyte.com/"},
+        ]
+      },
+      { id:"1-4", semana:2, titulo:"Formatos de arquivo: Parquet, Avro, ORC, JSON",
+        steps:[
+          {label:"TEORIA",desc:"Estude os formatos colunar vs row-based e suas características"},
+          {label:"VÍDEOS/RECURSOS",desc:"Leia benchmarks comparando performance de cada formato"},
+          {label:"EXERCÍCIO",desc:"Converta um CSV grande para Parquet com Python e compare o tamanho"},
+          {label:"FEITO",desc:"Sabe escolher o formato certo para cada caso de uso"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"Apache Parquet – formato e benefícios",url:"https://parquet.apache.org/docs/"},
+          {tipo:"YouTube",nome:"File Formats for Data Engineers – Darshil Parmar",url:"https://www.youtube.com/results?search_query=data+engineering+file+formats+parquet+avro"},
+        ]
+      },
+      { id:"1-5", semana:3, titulo:"SQL avançado: CTEs, Window Functions, Partitioning",
+        steps:[
+          {label:"TEORIA",desc:"Estude CTEs recursivos, OVER(), PARTITION BY, RANK, DENSE_RANK"},
+          {label:"VÍDEOS/RECURSOS",desc:"Resolva exercícios de SQL no LeetCode ou Mode Analytics"},
+          {label:"EXERCÍCIO",desc:"Escreva uma query com CTE + window function calculando ranking de vendas"},
+          {label:"FEITO",desc:"Consegue resolver problemas intermediários de SQL avançado"},
+        ],
+        recursos:[
+          {tipo:"Prática",nome:"LeetCode – SQL Problems",url:"https://leetcode.com/problemset/database/"},
+          {tipo:"Artigo",nome:"Mode SQL Tutorial – Window Functions",url:"https://mode.com/sql-tutorial/sql-window-functions/"},
+        ]
+      },
+      { id:"1-6", semana:3, titulo:"Python para dados: Pandas avançado, type hints, virtual envs",
+        steps:[
+          {label:"TEORIA",desc:"Estude groupby avançado, merge, pivot_table, type hints e venv"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pratique no Kaggle ou com datasets públicos"},
+          {label:"EXERCÍCIO",desc:"Crie um script Python tipado que processa e agrega um dataset real"},
+          {label:"FEITO",desc:"Escreve código Python limpo, tipado e organizado em ambiente virtual"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Pandas – User Guide",url:"https://pandas.pydata.org/docs/user_guide/"},
+          {tipo:"YouTube",nome:"Python Type Hints – Corey Schafer",url:"https://www.youtube.com/results?search_query=python+type+hints+tutorial"},
+        ]
+      },
     ]
   },
-  {
-    fase:2, titulo:"Cloud — AWS para Engenharia de Dados", semanas:"Semanas 4–8", cor:COR[1],
+  { fase:2, titulo:"Cloud — AWS para Engenharia de Dados", semanas:"Semanas 4–8", cor:COR[1], icon:ICON[1],
     topicos:[
-      {id:"2-1",semana:4,titulo:"IAM, S3, VPC — fundamentos de cloud"},
-      {id:"2-2",semana:4,titulo:"AWS S3 como Data Lake: particionamento e lifecycle"},
-      {id:"2-3",semana:5,titulo:"AWS Glue: Crawlers, Data Catalog e ETL Jobs"},
-      {id:"2-4",semana:5,titulo:"Amazon Athena: SQL sobre S3 com Presto"},
-      {id:"2-5",semana:6,titulo:"AWS Redshift: configuração, COPY, distribuição"},
-      {id:"2-6",semana:6,titulo:"RDS e DynamoDB — quando usar cada um"},
-      {id:"2-7",semana:7,titulo:"AWS Lambda para pipelines serverless"},
-      {id:"2-8",semana:7,titulo:"Amazon Kinesis: streaming de dados em tempo real"},
-      {id:"2-9",semana:8,titulo:"Simulado e revisão para AWS Cloud Practitioner"},
-      {id:"2-10",semana:8,titulo:"Projeto prático: pipeline S3 → Glue → Athena → QuickSight"},
+      { id:"2-1", semana:4, titulo:"IAM, S3, VPC — fundamentos de cloud",
+        steps:[
+          {label:"TEORIA",desc:"Entenda usuários, roles, políticas IAM, buckets S3 e VPC básica"},
+          {label:"VÍDEOS/RECURSOS",desc:"Faça o free tier da AWS e crie seus primeiros recursos"},
+          {label:"EXERCÍCIO",desc:"Crie um bucket S3, configure permissões IAM e suba um arquivo via CLI"},
+          {label:"FEITO",desc:"Navega no console AWS com segurança e entende os conceitos de segurança"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"AWS IAM Getting Started",url:"https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started.html"},
+          {tipo:"YouTube",nome:"AWS S3 Tutorial for Beginners",url:"https://www.youtube.com/results?search_query=aws+s3+tutorial+beginners"},
+        ]
+      },
+      { id:"2-2", semana:4, titulo:"AWS S3 como Data Lake: particionamento e lifecycle",
+        steps:[
+          {label:"TEORIA",desc:"Estude particionamento por data/região e políticas de lifecycle"},
+          {label:"VÍDEOS/RECURSOS",desc:"Leia sobre camadas raw/trusted/refined no S3"},
+          {label:"EXERCÍCIO",desc:"Crie uma estrutura de Data Lake no S3 com pastas particionadas por ano/mês"},
+          {label:"FEITO",desc:"Consegue estruturar um Data Lake básico no S3 com lifecycle configurado"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"AWS S3 Object Lifecycle Management",url:"https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"},
+          {tipo:"Artigo",nome:"Building a Data Lake on AWS – AWS Blog",url:"https://aws.amazon.com/blogs/big-data/"},
+        ]
+      },
+      { id:"2-3", semana:5, titulo:"AWS Glue: Crawlers, Data Catalog e ETL Jobs",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como o Glue descobre e cataloga dados automaticamente"},
+          {label:"VÍDEOS/RECURSOS",desc:"Assista tutoriais de Glue Crawler + Data Catalog na AWS"},
+          {label:"EXERCÍCIO",desc:"Configure um Crawler que cataloga arquivos Parquet no S3"},
+          {label:"FEITO",desc:"Cria e executa um job ETL no Glue com transformação de dados"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"AWS Glue Developer Guide",url:"https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html"},
+          {tipo:"YouTube",nome:"AWS Glue Tutorial – TechWorld with Nana",url:"https://www.youtube.com/results?search_query=aws+glue+tutorial+data+engineering"},
+        ]
+      },
+      { id:"2-4", semana:5, titulo:"Amazon Athena: SQL sobre S3 com Presto",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como o Athena executa queries SQL serverless sobre o S3"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore o console do Athena e a integração com Glue Data Catalog"},
+          {label:"EXERCÍCIO",desc:"Faça queries SQL no Athena sobre os dados catalogados pelo Glue"},
+          {label:"FEITO",desc:"Consegue analisar dados no S3 com SQL sem provisionar nenhum servidor"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Amazon Athena User Guide",url:"https://docs.aws.amazon.com/athena/latest/ug/what-is.html"},
+          {tipo:"YouTube",nome:"Amazon Athena Tutorial",url:"https://www.youtube.com/results?search_query=amazon+athena+tutorial"},
+        ]
+      },
+      { id:"2-5", semana:6, titulo:"AWS Redshift: configuração, COPY, distribuição",
+        steps:[
+          {label:"TEORIA",desc:"Entenda o Redshift como MPP (Massive Parallel Processing) e distribution keys"},
+          {label:"VÍDEOS/RECURSOS",desc:"Estude o comando COPY e estratégias de distribuição de dados"},
+          {label:"EXERCÍCIO",desc:"Crie um cluster Redshift, carregue dados do S3 com COPY e faça queries"},
+          {label:"FEITO",desc:"Sabe configurar e usar o Redshift para análises de grandes volumes"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Amazon Redshift – Getting Started",url:"https://docs.aws.amazon.com/redshift/latest/gsg/getting-started.html"},
+          {tipo:"YouTube",nome:"AWS Redshift Tutorial",url:"https://www.youtube.com/results?search_query=aws+redshift+tutorial"},
+        ]
+      },
+      { id:"2-6", semana:6, titulo:"RDS e DynamoDB — quando usar cada um",
+        steps:[
+          {label:"TEORIA",desc:"Compare bancos relacionais gerenciados (RDS) vs NoSQL (DynamoDB)"},
+          {label:"VÍDEOS/RECURSOS",desc:"Estude casos de uso: OLTP no RDS vs acesso de baixa latência no DynamoDB"},
+          {label:"EXERCÍCIO",desc:"Crie uma tabela no DynamoDB e simule operações CRUD via Python"},
+          {label:"FEITO",desc:"Escolhe o banco certo para cada caso de uso em arquiteturas AWS"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Amazon DynamoDB – Developer Guide",url:"https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/"},
+          {tipo:"Artigo",nome:"RDS vs DynamoDB – quando usar cada um",url:"https://aws.amazon.com/blogs/database/"},
+        ]
+      },
+      { id:"2-7", semana:7, titulo:"AWS Lambda para pipelines serverless",
+        steps:[
+          {label:"TEORIA",desc:"Entenda o modelo serverless, triggers e limites do Lambda"},
+          {label:"VÍDEOS/RECURSOS",desc:"Aprenda a criar funções Lambda com Python e configurar triggers S3"},
+          {label:"EXERCÍCIO",desc:"Crie uma Lambda que processa um arquivo quando ele chega no S3"},
+          {label:"FEITO",desc:"Consegue construir pipelines event-driven sem servidor"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"AWS Lambda Developer Guide",url:"https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"},
+          {tipo:"YouTube",nome:"AWS Lambda with Python Tutorial",url:"https://www.youtube.com/results?search_query=aws+lambda+python+tutorial"},
+        ]
+      },
+      { id:"2-8", semana:7, titulo:"Amazon Kinesis: streaming de dados em tempo real",
+        steps:[
+          {label:"TEORIA",desc:"Entenda Kinesis Data Streams, Firehose e Analytics"},
+          {label:"VÍDEOS/RECURSOS",desc:"Estude diferenças entre batch e streaming"},
+          {label:"EXERCÍCIO",desc:"Simule um produtor de dados que envia eventos ao Kinesis Data Streams"},
+          {label:"FEITO",desc:"Consegue ingerir dados em tempo real com Kinesis"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Amazon Kinesis – Getting Started",url:"https://docs.aws.amazon.com/kinesis/"},
+          {tipo:"YouTube",nome:"AWS Kinesis Tutorial",url:"https://www.youtube.com/results?search_query=aws+kinesis+tutorial"},
+        ]
+      },
+      { id:"2-9", semana:8, titulo:"Simulado e revisão para AWS Cloud Practitioner",
+        steps:[
+          {label:"TEORIA",desc:"Revise todos os serviços AWS estudados nas últimas semanas"},
+          {label:"VÍDEOS/RECURSOS",desc:"Faça simulados no Udemy ou ExamTopics para a CLF-C02"},
+          {label:"EXERCÍCIO",desc:"Complete pelo menos 3 simulados completos com 70%+ de acerto"},
+          {label:"FEITO",desc:"Pronto para o exame AWS Cloud Practitioner"},
+        ],
+        recursos:[
+          {tipo:"Prática",nome:"ExamTopics – AWS Cloud Practitioner",url:"https://www.examtopics.com/exams/amazon/aws-certified-cloud-practitioner/"},
+          {tipo:"Curso",nome:"Udemy – AWS Practitioner (Stephane Maarek)",url:"https://www.udemy.com/course/aws-certified-cloud-practitioner-new/"},
+        ]
+      },
+      { id:"2-10", semana:8, titulo:"Projeto prático: pipeline S3 → Glue → Athena → QuickSight",
+        steps:[
+          {label:"TEORIA",desc:"Planeje a arquitetura completa do pipeline end-to-end"},
+          {label:"VÍDEOS/RECURSOS",desc:"Revise a documentação de cada serviço envolvido"},
+          {label:"EXERCÍCIO",desc:"Implemente o pipeline completo com dados reais ou públicos"},
+          {label:"FEITO",desc:"Pipeline funcionando e documentado no GitHub"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"AWS Big Data Blog – Pipeline tutorials",url:"https://aws.amazon.com/blogs/big-data/"},
+          {tipo:"YouTube",nome:"End-to-End AWS Data Pipeline",url:"https://www.youtube.com/results?search_query=aws+data+pipeline+end+to+end+tutorial"},
+        ]
+      },
     ]
   },
-  {
-    fase:3, titulo:"Pipelines & Orquestração", semanas:"Semanas 9–14", cor:COR[2],
+  { fase:3, titulo:"Pipelines & Orquestração", semanas:"Semanas 9–14", cor:COR[2], icon:ICON[2],
     topicos:[
-      {id:"3-1",semana:9,titulo:"Apache Airflow: DAGs, Operators, XComs"},
-      {id:"3-2",semana:9,titulo:"dbt (data build tool): models, tests, lineage"},
-      {id:"3-3",semana:10,titulo:"dbt avançado: macros, snapshots, seeds"},
-      {id:"3-4",semana:10,titulo:"Qualidade de dados: Great Expectations"},
-      {id:"3-5",semana:11,titulo:"Docker para engenharia de dados"},
-      {id:"3-6",semana:11,titulo:"Containers na AWS: ECS e ECR básico"},
-      {id:"3-7",semana:12,titulo:"CI/CD para pipelines: GitHub Actions"},
-      {id:"3-8",semana:12,titulo:"Infrastructure as Code: Terraform básico para AWS"},
-      {id:"3-9",semana:13,titulo:"Projeto: pipeline Airflow + dbt + S3 + Redshift"},
-      {id:"3-10",semana:14,titulo:"Code review do projeto + documentação"},
+      { id:"3-1", semana:9, titulo:"Apache Airflow: DAGs, Operators, XComs",
+        steps:[
+          {label:"TEORIA",desc:"Entenda o conceito de DAG, scheduling e operadores do Airflow"},
+          {label:"VÍDEOS/RECURSOS",desc:"Instale o Airflow localmente com Docker e explore a UI"},
+          {label:"EXERCÍCIO",desc:"Crie uma DAG com PythonOperator e BashOperator com dependências"},
+          {label:"FEITO",desc:"Consegue criar e monitorar pipelines com Airflow"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Apache Airflow – Documentation",url:"https://airflow.apache.org/docs/"},
+          {tipo:"YouTube",nome:"Apache Airflow Tutorial – Marc Lamberti",url:"https://www.youtube.com/results?search_query=apache+airflow+tutorial+beginners"},
+        ]
+      },
+      { id:"3-2", semana:9, titulo:"dbt (data build tool): models, tests, lineage",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como o dbt transforma dados com SQL e gera lineage"},
+          {label:"VÍDEOS/RECURSOS",desc:"Complete o dbt Learn – Fundamentals (gratuito)"},
+          {label:"EXERCÍCIO",desc:"Crie models, sources, tests e rode dbt run + dbt test"},
+          {label:"FEITO",desc:"Transforma dados com dbt e visualiza o lineage no docs"},
+        ],
+        recursos:[
+          {tipo:"Curso",nome:"dbt Learn – Fundamentals (gratuito)",url:"https://learn.getdbt.com/courses/dbt-fundamentals"},
+          {tipo:"Docs",nome:"dbt Documentation",url:"https://docs.getdbt.com/"},
+        ]
+      },
+      { id:"3-3", semana:10, titulo:"dbt avançado: macros, snapshots, seeds",
+        steps:[
+          {label:"TEORIA",desc:"Estude macros Jinja, snapshots para SCD tipo 2 e seeds"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore projetos open source no GitHub para referência"},
+          {label:"EXERCÍCIO",desc:"Crie um snapshot de uma tabela de clientes e uma macro reutilizável"},
+          {label:"FEITO",desc:"Usa recursos avançados do dbt com confiança"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"dbt – Snapshots",url:"https://docs.getdbt.com/docs/build/snapshots"},
+          {tipo:"Artigo",nome:"dbt Macros – best practices",url:"https://docs.getdbt.com/docs/build/jinja-macros"},
+        ]
+      },
+      { id:"3-4", semana:10, titulo:"Qualidade de dados: Great Expectations",
+        steps:[
+          {label:"TEORIA",desc:"Entenda o conceito de data contracts e expectativas de qualidade"},
+          {label:"VÍDEOS/RECURSOS",desc:"Siga o tutorial oficial do Great Expectations"},
+          {label:"EXERCÍCIO",desc:"Configure expectations em um dataset e gere um data docs report"},
+          {label:"FEITO",desc:"Consegue adicionar validações de qualidade em pipelines"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Great Expectations – Getting Started",url:"https://docs.greatexpectations.io/"},
+          {tipo:"YouTube",nome:"Great Expectations Tutorial",url:"https://www.youtube.com/results?search_query=great+expectations+data+quality+tutorial"},
+        ]
+      },
+      { id:"3-5", semana:11, titulo:"Docker para engenharia de dados",
+        steps:[
+          {label:"TEORIA",desc:"Entenda containers, images, volumes e docker-compose"},
+          {label:"VÍDEOS/RECURSOS",desc:"Siga o tutorial oficial Docker + crie um Dockerfile para um script Python"},
+          {label:"EXERCÍCIO",desc:"Containerize um pipeline Python com banco de dados usando docker-compose"},
+          {label:"FEITO",desc:"Consegue rodar qualquer ferramenta de dados em container"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Docker – Get Started",url:"https://docs.docker.com/get-started/"},
+          {tipo:"YouTube",nome:"Docker Tutorial for Beginners – TechWorld with Nana",url:"https://www.youtube.com/results?search_query=docker+tutorial+data+engineering"},
+        ]
+      },
+      { id:"3-6", semana:11, titulo:"Containers na AWS: ECS e ECR básico",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como rodar containers na AWS com ECS Fargate e ECR"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore o console ECS e o fluxo de push de imagem para o ECR"},
+          {label:"EXERCÍCIO",desc:"Publique uma imagem Docker no ECR e rode-a no ECS Fargate"},
+          {label:"FEITO",desc:"Consegue deployar containers de dados na AWS"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Amazon ECS – Getting Started",url:"https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html"},
+          {tipo:"YouTube",nome:"AWS ECS Fargate Tutorial",url:"https://www.youtube.com/results?search_query=aws+ecs+fargate+tutorial"},
+        ]
+      },
+      { id:"3-7", semana:12, titulo:"CI/CD para pipelines: GitHub Actions",
+        steps:[
+          {label:"TEORIA",desc:"Entenda workflows, jobs, steps e secrets no GitHub Actions"},
+          {label:"VÍDEOS/RECURSOS",desc:"Estude exemplos de CI/CD para projetos de dados"},
+          {label:"EXERCÍCIO",desc:"Crie um workflow que roda testes do dbt a cada push no main"},
+          {label:"FEITO",desc:"Pipeline de CI/CD funcionando com testes automatizados"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"GitHub Actions – Documentation",url:"https://docs.github.com/en/actions"},
+          {tipo:"YouTube",nome:"GitHub Actions Tutorial – TechWorld with Nana",url:"https://www.youtube.com/results?search_query=github+actions+tutorial"},
+        ]
+      },
+      { id:"3-8", semana:12, titulo:"Infrastructure as Code: Terraform básico para AWS",
+        steps:[
+          {label:"TEORIA",desc:"Entenda providers, resources, state e módulos no Terraform"},
+          {label:"VÍDEOS/RECURSOS",desc:"Complete o tutorial oficial HashiCorp para AWS"},
+          {label:"EXERCÍCIO",desc:"Provisione um bucket S3 e uma role IAM usando Terraform"},
+          {label:"FEITO",desc:"Consegue criar infraestrutura AWS de forma reproduzível com código"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Terraform – Get Started (AWS)",url:"https://developer.hashicorp.com/terraform/tutorials/aws-get-started"},
+          {tipo:"YouTube",nome:"Terraform Tutorial – TechWorld with Nana",url:"https://www.youtube.com/results?search_query=terraform+aws+tutorial"},
+        ]
+      },
+      { id:"3-9", semana:13, titulo:"Projeto: pipeline Airflow + dbt + S3 + Redshift",
+        steps:[
+          {label:"TEORIA",desc:"Planeje a arquitetura integrando todas as ferramentas aprendidas"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise projetos de referência no GitHub"},
+          {label:"EXERCÍCIO",desc:"Implemente o pipeline completo orquestrado pelo Airflow"},
+          {label:"FEITO",desc:"Projeto documentado no GitHub com README detalhado"},
+        ],
+        recursos:[
+          {tipo:"GitHub",nome:"Exemplos de projetos DE no GitHub",url:"https://github.com/topics/data-engineering"},
+          {tipo:"YouTube",nome:"Data Engineering Project – Airflow + dbt",url:"https://www.youtube.com/results?search_query=data+engineering+project+airflow+dbt"},
+        ]
+      },
+      { id:"3-10", semana:14, titulo:"Code review do projeto + documentação",
+        steps:[
+          {label:"TEORIA",desc:"Estude boas práticas de documentação técnica e README"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise exemplos de READMEs profissionais no GitHub"},
+          {label:"EXERCÍCIO",desc:"Escreva README completo com arquitetura, setup e decisões técnicas"},
+          {label:"FEITO",desc:"Projeto pronto para portfólio com documentação exemplar"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"Como escrever um bom README",url:"https://www.makeareadme.com/"},
+          {tipo:"Artigo",nome:"Conventional Commits – padrão de commits",url:"https://www.conventionalcommits.org/"},
+        ]
+      },
     ]
   },
-  {
-    fase:4, titulo:"Spark & Processamento Distribuído", semanas:"Semanas 15–20", cor:COR[3],
+  { fase:4, titulo:"Spark & Processamento Distribuído", semanas:"Semanas 15–20", cor:COR[3], icon:ICON[3],
     topicos:[
-      {id:"4-1",semana:15,titulo:"Fundamentos do Apache Spark: RDD, DataFrame, Dataset"},
-      {id:"4-2",semana:15,titulo:"PySpark: transformações, ações e lazy evaluation"},
-      {id:"4-3",semana:16,titulo:"Spark SQL e integração com Hive Metastore"},
-      {id:"4-4",semana:16,titulo:"Otimização: particionamento, cache, broadcast joins"},
-      {id:"4-5",semana:17,titulo:"Spark Streaming e Structured Streaming"},
-      {id:"4-6",semana:17,titulo:"Delta Lake: ACID transactions sobre Spark"},
-      {id:"4-7",semana:18,titulo:"AWS EMR: cluster Spark gerenciado na nuvem"},
-      {id:"4-8",semana:18,titulo:"Databricks Community Edition: notebooks e workflows"},
-      {id:"4-9",semana:19,titulo:"Projeto: pipeline Spark no EMR com Delta Lake"},
-      {id:"4-10",semana:20,titulo:"Revisão geral + simulado AWS Data Engineer Associate"},
+      { id:"4-1", semana:15, titulo:"Fundamentos do Apache Spark: RDD, DataFrame, Dataset",
+        steps:[
+          {label:"TEORIA",desc:"Entenda a diferença entre RDD, DataFrame e Dataset no Spark"},
+          {label:"VÍDEOS/RECURSOS",desc:"Assista a introdução ao Spark no canal Data Engineering Simplified"},
+          {label:"EXERCÍCIO",desc:"Crie RDDs e DataFrames no Spark local e aplique transformações básicas"},
+          {label:"FEITO",desc:"Entende o modelo de execução distribuída do Spark"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Apache Spark – Quick Start",url:"https://spark.apache.org/docs/latest/quick-start.html"},
+          {tipo:"YouTube",nome:"Apache Spark Tutorial – Simplilearn",url:"https://www.youtube.com/results?search_query=apache+spark+tutorial+beginners"},
+        ]
+      },
+      { id:"4-2", semana:15, titulo:"PySpark: transformações, ações e lazy evaluation",
+        steps:[
+          {label:"TEORIA",desc:"Estude o conceito de lazy evaluation, DAG de execução e shuffle"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pratique no Databricks Community Edition (gratuito)"},
+          {label:"EXERCÍCIO",desc:"Carregue um dataset grande, aplique filtros, joins e aggregations com PySpark"},
+          {label:"FEITO",desc:"Escreve código PySpark eficiente e entende quando ocorre shuffle"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"PySpark – API Documentation",url:"https://spark.apache.org/docs/latest/api/python/"},
+          {tipo:"YouTube",nome:"PySpark Tutorial for Beginners",url:"https://www.youtube.com/results?search_query=pyspark+tutorial+beginners"},
+        ]
+      },
+      { id:"4-3", semana:16, titulo:"Spark SQL e integração com Hive Metastore",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como o Spark SQL usa o Hive Metastore como catálogo"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore queries SQL no Spark e criação de views temporárias"},
+          {label:"EXERCÍCIO",desc:"Crie tabelas gerenciadas e externas no Spark SQL e faça queries complexas"},
+          {label:"FEITO",desc:"Usa Spark SQL para análises como se fosse um DW convencional"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Spark SQL – Guide",url:"https://spark.apache.org/docs/latest/sql-programming-guide.html"},
+          {tipo:"YouTube",nome:"Spark SQL Tutorial",url:"https://www.youtube.com/results?search_query=spark+sql+tutorial"},
+        ]
+      },
+      { id:"4-4", semana:16, titulo:"Otimização: particionamento, cache, broadcast joins",
+        steps:[
+          {label:"TEORIA",desc:"Estude as técnicas de otimização de jobs Spark para produção"},
+          {label:"VÍDEOS/RECURSOS",desc:"Leia sobre o Spark UI e como interpretar o DAG e stages"},
+          {label:"EXERCÍCIO",desc:"Otimize um job lento usando broadcast join e repartition"},
+          {label:"FEITO",desc:"Consegue identificar e resolver gargalos em jobs Spark"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"Spark Performance Tuning – Databricks",url:"https://www.databricks.com/glossary/spark-performance-tuning"},
+          {tipo:"YouTube",nome:"Spark Optimization Techniques",url:"https://www.youtube.com/results?search_query=spark+optimization+techniques"},
+        ]
+      },
+      { id:"4-5", semana:17, titulo:"Spark Streaming e Structured Streaming",
+        steps:[
+          {label:"TEORIA",desc:"Entenda micro-batching, triggers e output modes no Structured Streaming"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore exemplos de streaming com Kafka + Spark"},
+          {label:"EXERCÍCIO",desc:"Crie um job de Structured Streaming lendo de uma fonte e gravando no console"},
+          {label:"FEITO",desc:"Consegue processar dados em tempo real com Spark"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Structured Streaming – Programming Guide",url:"https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html"},
+          {tipo:"YouTube",nome:"Spark Structured Streaming Tutorial",url:"https://www.youtube.com/results?search_query=spark+structured+streaming+tutorial"},
+        ]
+      },
+      { id:"4-6", semana:17, titulo:"Delta Lake: ACID transactions sobre Spark",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como o Delta Lake adiciona ACID, time travel e schema evolution"},
+          {label:"VÍDEOS/RECURSOS",desc:"Complete o Delta Lake quickstart no Databricks"},
+          {label:"EXERCÍCIO",desc:"Crie uma tabela Delta, faça updates/deletes e use o time travel"},
+          {label:"FEITO",desc:"Usa Delta Lake para garantir confiabilidade em pipelines Spark"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Delta Lake – Documentation",url:"https://docs.delta.io/latest/index.html"},
+          {tipo:"YouTube",nome:"Delta Lake Tutorial – Databricks",url:"https://www.youtube.com/results?search_query=delta+lake+tutorial+databricks"},
+        ]
+      },
+      { id:"4-7", semana:18, titulo:"AWS EMR: cluster Spark gerenciado na nuvem",
+        steps:[
+          {label:"TEORIA",desc:"Entenda como o EMR provisiona e gerencia clusters Spark na AWS"},
+          {label:"VÍDEOS/RECURSOS",desc:"Explore o console EMR e os tipos de cluster (on-demand vs spot)"},
+          {label:"EXERCÍCIO",desc:"Submeta um job PySpark no EMR usando o S3 como storage"},
+          {label:"FEITO",desc:"Roda jobs Spark em produção na AWS com EMR"},
+        ],
+        recursos:[
+          {tipo:"Docs",nome:"Amazon EMR – Getting Started",url:"https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html"},
+          {tipo:"YouTube",nome:"AWS EMR Tutorial",url:"https://www.youtube.com/results?search_query=aws+emr+pyspark+tutorial"},
+        ]
+      },
+      { id:"4-8", semana:18, titulo:"Databricks Community Edition: notebooks e workflows",
+        steps:[
+          {label:"TEORIA",desc:"Explore a plataforma Databricks: clusters, notebooks e workflows"},
+          {label:"VÍDEOS/RECURSOS",desc:"Complete os tutoriais da Databricks Academy (gratuitos)"},
+          {label:"EXERCÍCIO",desc:"Crie um notebook com PySpark + Delta Lake e agende com Workflows"},
+          {label:"FEITO",desc:"Usa Databricks como ambiente profissional de engenharia de dados"},
+        ],
+        recursos:[
+          {tipo:"Curso",nome:"Databricks Academy – Gratuito",url:"https://www.databricks.com/learn/training/catalog"},
+          {tipo:"Docs",nome:"Databricks – Documentation",url:"https://docs.databricks.com/"},
+        ]
+      },
+      { id:"4-9", semana:19, titulo:"Projeto: pipeline Spark no EMR com Delta Lake",
+        steps:[
+          {label:"TEORIA",desc:"Planeje a arquitetura do pipeline de ponta a ponta"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise projetos de referência com EMR + Delta Lake"},
+          {label:"EXERCÍCIO",desc:"Implemente o pipeline completo com ingestão, transformação e Delta Lake"},
+          {label:"FEITO",desc:"Projeto documentado no GitHub — peça de portfólio sólida"},
+        ],
+        recursos:[
+          {tipo:"GitHub",nome:"Awesome Data Engineering – referências",url:"https://github.com/igorbarinov/awesome-data-engineering"},
+          {tipo:"YouTube",nome:"Data Engineering Project with Spark",url:"https://www.youtube.com/results?search_query=data+engineering+project+spark+emr"},
+        ]
+      },
+      { id:"4-10", semana:20, titulo:"Revisão geral + simulado AWS Data Engineer Associate",
+        steps:[
+          {label:"TEORIA",desc:"Revise todos os conceitos de Spark, Delta Lake, EMR e Kinesis"},
+          {label:"VÍDEOS/RECURSOS",desc:"Faça simulados para a certificação AWS DEA-C01"},
+          {label:"EXERCÍCIO",desc:"Complete 3 simulados com 75%+ de acerto"},
+          {label:"FEITO",desc:"Pronto para a certificação AWS Data Engineer Associate"},
+        ],
+        recursos:[
+          {tipo:"Curso",nome:"Udemy – AWS Data Engineer Associate",url:"https://www.udemy.com/courses/search/?q=aws+data+engineer+associate"},
+          {tipo:"Prática",nome:"ExamTopics – AWS DEA-C01",url:"https://www.examtopics.com/exams/amazon/aws-certified-data-engineer-associate/"},
+        ]
+      },
     ]
   },
-  {
-    fase:5, titulo:"Portfólio & Transição", semanas:"Semanas 21–24", cor:COR[4],
+  { fase:5, titulo:"Portfólio & Transição", semanas:"Semanas 21–24", cor:COR[4], icon:ICON[4],
     topicos:[
-      {id:"5-1",semana:21,titulo:"GitHub: organizar projetos com README profissional"},
-      {id:"5-2",semana:21,titulo:"Projeto final integrador: end-to-end pipeline completo"},
-      {id:"5-3",semana:22,titulo:"LinkedIn: reposicionamento de perfil para DE"},
-      {id:"5-4",semana:22,titulo:"Preparação para entrevistas técnicas de DE"},
-      {id:"5-5",semana:23,titulo:"Mock interviews: SQL avançado e system design"},
-      {id:"5-6",semana:23,titulo:"Networking: comunidades (Data Hackers, Slack groups)"},
-      {id:"5-7",semana:24,titulo:"Revisão final do portfólio e candidaturas ativas"},
-      {id:"5-8",semana:24,titulo:"🎯 Meta: primeira vaga como Engenheiro de Dados"},
+      { id:"5-1", semana:21, titulo:"GitHub: organizar projetos com README profissional",
+        steps:[
+          {label:"TEORIA",desc:"Estude boas práticas de organização de repositórios e perfil GitHub"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise exemplos de perfis GitHub de engenheiros de dados sêniors"},
+          {label:"EXERCÍCIO",desc:"Organize todos seus projetos com READMEs detalhados e arquitetura visual"},
+          {label:"FEITO",desc:"Perfil GitHub pronto para apresentar em entrevistas"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"Como criar um README de perfil no GitHub",url:"https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme"},
+          {tipo:"Artigo",nome:"Shields.io – badges para README",url:"https://shields.io/"},
+        ]
+      },
+      { id:"5-2", semana:21, titulo:"Projeto final integrador: end-to-end pipeline completo",
+        steps:[
+          {label:"TEORIA",desc:"Planeje um projeto que una ingestão, transformação, armazenamento e visualização"},
+          {label:"VÍDEOS/RECURSOS",desc:"Busque datasets públicos interessantes para o projeto"},
+          {label:"EXERCÍCIO",desc:"Implemente o pipeline completo com todas as tecnologias aprendidas"},
+          {label:"FEITO",desc:"Projeto final no GitHub e LinkedIn — sua principal peça de portfólio"},
+        ],
+        recursos:[
+          {tipo:"Dados",nome:"Kaggle – Datasets públicos",url:"https://www.kaggle.com/datasets"},
+          {tipo:"Dados",nome:"dados.gov.br – dados abertos do Brasil",url:"https://dados.gov.br/"},
+        ]
+      },
+      { id:"5-3", semana:22, titulo:"LinkedIn: reposicionamento de perfil para DE",
+        steps:[
+          {label:"TEORIA",desc:"Estude como engenheiros de dados descrevem suas experiências no LinkedIn"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise perfis de DEs com experiência similar à sua para referência"},
+          {label:"EXERCÍCIO",desc:"Reescreva seu about, experiências e headline focando em dados e tecnologia"},
+          {label:"FEITO",desc:"Perfil LinkedIn otimizado para aparecer em buscas de recrutadores"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"Como otimizar LinkedIn para tech jobs",url:"https://www.linkedin.com/help/linkedin/answer/a554120"},
+          {tipo:"YouTube",nome:"LinkedIn Profile Tips for Data Engineers",url:"https://www.youtube.com/results?search_query=linkedin+profile+data+engineer"},
+        ]
+      },
+      { id:"5-4", semana:22, titulo:"Preparação para entrevistas técnicas de DE",
+        steps:[
+          {label:"TEORIA",desc:"Estude os tópicos mais cobrados: SQL, Python, system design e cloud"},
+          {label:"VÍDEOS/RECURSOS",desc:"Leia o repositório Data Engineering Interview Questions no GitHub"},
+          {label:"EXERCÍCIO",desc:"Responda 30 perguntas técnicas de DE por escrito"},
+          {label:"FEITO",desc:"Preparado para a fase técnica de entrevistas de DE"},
+        ],
+        recursos:[
+          {tipo:"GitHub",nome:"Data Engineering Interview Questions",url:"https://github.com/OBenner/data-engineering-interview-questions"},
+          {tipo:"YouTube",nome:"Data Engineer Interview Prep",url:"https://www.youtube.com/results?search_query=data+engineer+interview+questions"},
+        ]
+      },
+      { id:"5-5", semana:23, titulo:"Mock interviews: SQL avançado e system design",
+        steps:[
+          {label:"TEORIA",desc:"Revise frameworks de system design para dados (lambda, kappa architecture)"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pratique no Pramp ou com colegas da área"},
+          {label:"EXERCÍCIO",desc:"Faça 3 mock interviews de SQL avançado e 2 de system design"},
+          {label:"FEITO",desc:"Confortável para resolver problemas ao vivo em entrevistas"},
+        ],
+        recursos:[
+          {tipo:"Prática",nome:"Pramp – Mock Interviews gratuito",url:"https://www.pramp.com/"},
+          {tipo:"Artigo",nome:"Data Engineering System Design – guia",url:"https://www.youtube.com/results?search_query=data+engineering+system+design+interview"},
+        ]
+      },
+      { id:"5-6", semana:23, titulo:"Networking: comunidades (Data Hackers, Slack groups)",
+        steps:[
+          {label:"TEORIA",desc:"Entenda a importância do networking na área de dados no Brasil"},
+          {label:"VÍDEOS/RECURSOS",desc:"Entre no Slack do Data Hackers e grupos de LinkedIn de dados"},
+          {label:"EXERCÍCIO",desc:"Faça 5 conexões com profissionais de dados e participe de 1 discussão"},
+          {label:"FEITO",desc:"Ativo em comunidades de dados e expandindo sua rede"},
+        ],
+        recursos:[
+          {tipo:"Comunidade",nome:"Data Hackers – maior comunidade de dados do Brasil",url:"https://datahackers.com.br/"},
+          {tipo:"Comunidade",nome:"Slack – Data Engineering",url:"https://www.dataengineeringweekly.com/"},
+        ]
+      },
+      { id:"5-7", semana:24, titulo:"Revisão final do portfólio e candidaturas ativas",
+        steps:[
+          {label:"TEORIA",desc:"Revise todos os projetos, README e perfis com olhar crítico"},
+          {label:"VÍDEOS/RECURSOS",desc:"Pesquise vagas de DE no LinkedIn, Gupy e Indeed"},
+          {label:"EXERCÍCIO",desc:"Candidate-se a pelo menos 10 vagas de Junior/Pleno DE"},
+          {label:"FEITO",desc:"Candidaturas enviadas e processo seletivo em andamento"},
+        ],
+        recursos:[
+          {tipo:"Vagas",nome:"LinkedIn Jobs – Engenheiro de Dados",url:"https://www.linkedin.com/jobs/search/?keywords=engenheiro+de+dados"},
+          {tipo:"Vagas",nome:"Gupy – vagas de dados",url:"https://portal.gupy.io/"},
+        ]
+      },
+      { id:"5-8", semana:24, titulo:"🎯 Meta: primeira vaga como Engenheiro de Dados",
+        steps:[
+          {label:"TEORIA",desc:"Reflita sobre sua jornada — o que aprendeu, o que pode melhorar"},
+          {label:"VÍDEOS/RECURSOS",desc:"Leia relatos de transições de carreira para DE"},
+          {label:"EXERCÍCIO",desc:"Negocie a oferta com confiança e aceite sua primeira vaga de DE"},
+          {label:"FEITO",desc:"🎉 Parabéns — você é um Engenheiro de Dados!"},
+        ],
+        recursos:[
+          {tipo:"Artigo",nome:"Como negociar salário em tech",url:"https://www.youtube.com/results?search_query=como+negociar+salario+tech+brasil"},
+          {tipo:"Comunidade",nome:"Data Hackers – compartilhe sua conquista",url:"https://datahackers.com.br/"},
+        ]
+      },
     ]
   },
 ];
 
-const STORAGE_KEY = "de_roadmap_v2";
-let progress = {};
-try { progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch {}
+// ── STORAGE ───────────────────────────────────────────────────────────────────
+const K = { prog:"de_v4_prog", inicio:"de_v4_inicio", streak:"de_v4_streak", steps:"de_v4_steps" };
+let progress={}, dataInicio=null, streakDias=[], stepsProgress={};
+try{ progress=JSON.parse(localStorage.getItem(K.prog)||"{}"); }catch{}
+try{ dataInicio=localStorage.getItem(K.inicio)||null; }catch{}
+try{ streakDias=JSON.parse(localStorage.getItem(K.streak)||"[]"); }catch{}
+try{ stepsProgress=JSON.parse(localStorage.getItem(K.steps)||"{}"); }catch{}
 
-let filtroSemana = null;
-let faseAberta = 1;
-
-function salvar() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch {}
+function salvarTudo(){
+  localStorage.setItem(K.prog,JSON.stringify(progress));
+  localStorage.setItem(K.streak,JSON.stringify(streakDias));
+  localStorage.setItem(K.steps,JSON.stringify(stepsProgress));
 }
 
-function totalFeitos() {
-  return ROADMAP.flatMap(f => f.topicos).filter(t => progress[t.id]).length;
+// ── NAV ───────────────────────────────────────────────────────────────────────
+let currentPage = 0;
+const TOTAL_PAGES = 6; // 0=home, 1-5=phases
+
+function irPara(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  currentPage=n;
+  renderNavDots();
+  updateNavBtns();
+  window.scrollTo(0,0);
 }
 
-function atualizarProgresso() {
-  const feitos = totalFeitos();
-  const total = 44;
-  const pct = Math.round((feitos / total) * 100);
-  document.getElementById("pct-geral").textContent = pct + "%";
-  document.getElementById("barra-geral").style.width = pct + "%";
-  document.getElementById("prog-sub").textContent = feitos + " de " + total + " tópicos concluídos";
-  ROADMAP.forEach(fase => {
-    const f = fase.topicos.filter(t => progress[t.id]).length;
-    const p = Math.round((f / fase.topicos.length) * 100);
-    const pEl = document.getElementById("fase-pct-" + fase.fase);
-    const bEl = document.getElementById("fase-bar-" + fase.fase);
-    if (pEl) pEl.textContent = p + "%";
-    if (bEl) bEl.style.width = p + "%";
+function navPrev(){ if(currentPage>0) irPara(currentPage-1); }
+function navNext(){ if(currentPage<TOTAL_PAGES-1) irPara(currentPage+1); }
+
+function updateNavBtns(){
+  document.getElementById('btn-prev').disabled = currentPage===0;
+  document.getElementById('btn-next').disabled = currentPage===TOTAL_PAGES-1;
+}
+
+function renderNavDots(){
+  const c = document.getElementById('nav-dots');
+  c.innerHTML='';
+  for(let i=0;i<TOTAL_PAGES;i++){
+    const d=document.createElement('div');
+    d.className='nav-dot'+(i===0?' home':'')+(i===currentPage?' active':'');
+    d.onclick=()=>irPara(i);
+    d.title=i===0?'Home':'Fase '+i;
+    c.appendChild(d);
+  }
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+const hoje=()=>new Date().toISOString().split('T')[0];
+function fmtData(iso){ if(!iso)return'—'; const[y,m,d]=iso.split('-'); return d+'/'+m+'/'+y; }
+function offsetData(iso,n){ const d=new Date(iso); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; }
+function calcStreak(){
+  if(!streakDias.length)return 0;
+  const sorted=[...new Set(streakDias)].sort().reverse();
+  let streak=0,cursor=hoje();
+  for(const d of sorted){ if(d===cursor){streak++;cursor=offsetData(cursor,-1);}else if(d<cursor)break; }
+  return streak;
+}
+function totalFeitos(){ return ROADMAP.flatMap(f=>f.topicos).filter(t=>progress[t.id]).length; }
+function topicoDone(topico){ return !!progress[topico.id]; }
+
+// steps done for a topic
+function stepsDoneCount(topicoId){
+  return (stepsProgress[topicoId]||[]).length;
+}
+function isStepDone(topicoId,stepIdx){
+  return (stepsProgress[topicoId]||[]).includes(stepIdx);
+}
+function toggleStep(topicoId,stepIdx,totalSteps,cor){
+  if(!stepsProgress[topicoId]) stepsProgress[topicoId]=[];
+  const arr=stepsProgress[topicoId];
+  const i=arr.indexOf(stepIdx);
+  if(i>=0) arr.splice(i,1); else arr.push(stepIdx);
+  // auto-mark topico done if all steps done
+  progress[topicoId] = arr.length===totalSteps;
+  salvarTudo();
+  atualizarTudo();
+  // re-render step
+  renderStepItem(topicoId,stepIdx,totalSteps,cor);
+  updateTopicCard(topicoId,cor);
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function abrirModal(){
+  document.getElementById('data-input').value=hoje();
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+function salvarDataInicio(){
+  const v=document.getElementById('data-input').value;
+  if(!v)return;
+  dataInicio=v;
+  localStorage.setItem(K.inicio,v);
+  document.getElementById('modal-overlay').classList.add('hidden');
+  atualizarTudo();
+}
+document.getElementById('modal-overlay').addEventListener('click',function(e){
+  if(e.target===this&&dataInicio) this.classList.add('hidden');
+});
+
+// ── STREAK ────────────────────────────────────────────────────────────────────
+function marcarHoje(){
+  const h=hoje();
+  if(!streakDias.includes(h)){ streakDias.push(h); salvarTudo(); }
+  atualizarStreak();
+}
+function atualizarStreak(){
+  const streak=calcStreak(), h=hoje();
+  document.getElementById('stat-streak').textContent=streak+' 🔥';
+  document.getElementById('streak-count').textContent=streak+' dia'+(streak!==1?'s':'')+' seguido'+(streak!==1?'s':'');
+  const btn=document.getElementById('marcar-btn');
+  btn.disabled=streakDias.includes(h);
+  btn.textContent=streakDias.includes(h)?'✅ Já marcado hoje!':'✅ Marcar hoje como estudado';
+  const dots=document.getElementById('streak-dots'); dots.innerHTML='';
+  for(let i=13;i>=0;i--){
+    const d=offsetData(h,-i), dia=new Date(d).getDate();
+    const dot=document.createElement('div');
+    dot.className='sdot'+(streakDias.includes(d)?' ativo':'')+(d===h?' hoje':'');
+    dot.textContent=dia; dots.appendChild(dot);
+  }
+}
+
+// ── PROGRESSO ─────────────────────────────────────────────────────────────────
+function atualizarTrackers(){
+  if(!dataInicio)return;
+  const h=hoje(), dias=Math.floor((new Date(h)-new Date(dataInicio))/86400000)+1;
+  const conclusao=offsetData(dataInicio,168);
+  document.getElementById('stat-dias').textContent=dias+'d';
+  document.getElementById('stat-inicio-lbl').textContent='desde '+fmtData(dataInicio);
+  document.getElementById('stat-prev').textContent=fmtData(conclusao);
+  document.getElementById('tc-inicio').textContent=fmtData(dataInicio);
+  document.getElementById('tc-inicio-sub').innerHTML=dias+' dia'+(dias!==1?'s':'')+' de jornada &nbsp;·&nbsp; <span style="color:var(--blue);cursor:pointer;font-weight:600;font-size:11px;" onclick="abrirModal()">alterar</span>';
+  document.getElementById('tc-conclusao').textContent=fmtData(conclusao);
+  const feitos=totalFeitos();
+  if(feitos>0&&dias>0) document.getElementById('tc-conclusao-sub').textContent='ritmo: '+(feitos/dias).toFixed(2)+' tópicos/dia';
+}
+
+function atualizarProgresso(){
+  const feitos=totalFeitos(), total=44, pct=Math.round(feitos/total*100);
+  document.getElementById('pct-geral').textContent=pct+'%';
+  document.getElementById('barra-geral').style.width=pct+'%';
+  document.getElementById('prog-sub').textContent=feitos+' de '+total+' tópicos concluídos';
+  document.getElementById('stat-pct').textContent=pct+'%';
+  document.getElementById('stat-feitos').textContent=feitos+'/'+total+' tópicos';
+  // phase cards
+  ROADMAP.forEach(fase=>{
+    const f=fase.topicos.filter(t=>progress[t.id]).length;
+    const p=Math.round(f/fase.topicos.length*100);
+    const pEl=document.getElementById('pc-pct-'+fase.fase);
+    const bEl=document.getElementById('pc-bar-'+fase.fase);
+    const phPEl=document.getElementById('ph-pct-'+fase.fase);
+    const phBEl=document.getElementById('ph-bar-'+fase.fase);
+    if(pEl) pEl.textContent=p+'%';
+    if(bEl) bEl.style.width=p+'%';
+    if(phPEl) phPEl.textContent=p+'%';
+    if(phBEl) phBEl.style.width=p+'%';
   });
 }
 
-function toggleItem(id) {
-  progress[id] = !progress[id];
-  salvar();
-  const btn = document.querySelector(`[data-id="${id}"]`);
-  if (!btn) return;
-  const cor = btn.dataset.cor;
-  const checkBox = btn.querySelector(".check-box");
-  const texto = btn.querySelector(".topico-texto");
-  if (progress[id]) {
-    btn.classList.add("feito");
-    btn.style.borderLeftColor = cor;
-    checkBox.style.background = cor;
-    checkBox.style.borderColor = cor;
-    checkBox.textContent = "✓";
-    texto.style.textDecoration = "line-through";
-    texto.style.color = "#8892B0";
-  } else {
-    btn.classList.remove("feito");
-    btn.style.borderLeftColor = "#D6E0FF";
-    checkBox.style.background = "transparent";
-    checkBox.style.borderColor = "#D6E0FF";
-    checkBox.textContent = "";
-    texto.style.textDecoration = "none";
-    texto.style.color = "#4A5578";
-  }
-  atualizarProgresso();
+function atualizarTudo(){ atualizarProgresso(); atualizarStreak(); atualizarTrackers(); }
+
+// ── RENDER STEP ───────────────────────────────────────────────────────────────
+function renderStepItem(topicoId,stepIdx,totalSteps,cor){
+  const el=document.getElementById('step-'+topicoId+'-'+stepIdx);
+  if(!el)return;
+  const done=isStepDone(topicoId,stepIdx);
+  const step=ROADMAP.flatMap(f=>f.topicos).find(t=>t.id===topicoId).steps[stepIdx];
+  el.className='step-item'+(done?' done':'');
+  if(done){ el.style.borderLeftColor=cor; }else{ el.style.borderLeftColor=''; }
+  const chk=el.querySelector('.step-check');
+  chk.style.background=done?cor:'transparent';
+  chk.style.borderColor=done?cor:'var(--border)';
+  chk.textContent=done?'✓':'';
+  el.querySelector('.step-label').style.color=done?cor:'var(--muted)';
 }
 
-function criarTopicoEl(topico, cor, showFase, faseTitulo) {
-  const btn = document.createElement("button");
-  const feito = !!progress[topico.id];
-  btn.className = "topico-item" + (feito ? " feito" : "");
-  btn.dataset.id = topico.id;
-  btn.dataset.cor = cor;
-  if (feito) btn.style.borderLeftColor = cor;
-
-  const check = document.createElement("div");
-  check.className = "check-box";
-  check.style.borderColor = feito ? cor : "#D6E0FF";
-  check.style.background = feito ? cor : "transparent";
-  check.textContent = feito ? "✓" : "";
-
-  const wrap = document.createElement("div");
-
-  if (showFase) {
-    const fl = document.createElement("div");
-    fl.className = "topico-fase-label";
-    fl.style.color = cor;
-    fl.textContent = faseTitulo;
-    wrap.appendChild(fl);
-  }
-
-  const txt = document.createElement("div");
-  txt.className = "topico-texto";
-  txt.textContent = topico.titulo;
-  if (feito) { txt.style.textDecoration = "line-through"; txt.style.color = "#8892B0"; }
-  wrap.appendChild(txt);
-
-  btn.appendChild(check);
-  btn.appendChild(wrap);
-  btn.addEventListener("click", () => toggleItem(topico.id));
-  return btn;
+function updateTopicCard(topicoId,cor){
+  const card=document.getElementById('tc-'+topicoId);
+  if(!card)return;
+  const topico=ROADMAP.flatMap(f=>f.topicos).find(t=>t.id===topicoId);
+  const done=!!progress[topicoId];
+  const doneCount=stepsDoneCount(topicoId);
+  card.className='topic-card'+(done?' done':'');
+  const hdr=card.querySelector('.topic-header');
+  hdr.style.borderLeftColor=done?cor:'transparent';
+  const chk=card.querySelector('.th-check');
+  chk.style.background=done?cor:'transparent';
+  chk.style.borderColor=done?cor:'var(--border)';
+  chk.textContent=done?'✓':'';
+  const badge=card.querySelector('.th-prog-badge');
+  badge.textContent=doneCount+'/'+topico.steps.length;
+  badge.style.background=done?cor+'22':undefined;
+  badge.style.color=done?cor:undefined;
 }
 
-function renderFiltro() {
-  const scroll = document.getElementById("filtro-scroll");
-  scroll.innerHTML = "";
-  const semanas = [...new Set(ROADMAP.flatMap(f => f.topicos.map(t => t.semana)))].sort((a,b)=>a-b);
+// ── RENDER PHASE PAGE ─────────────────────────────────────────────────────────
+function buildPhasePage(fase){
+  const cont=document.getElementById('page-'+fase.fase);
+  cont.innerHTML='';
 
-  const btnAll = document.createElement("button");
-  btnAll.className = "filtro-btn" + (filtroSemana === null ? " ativo" : "");
-  btnAll.textContent = "Todas";
-  btnAll.addEventListener("click", () => { filtroSemana = null; render(); });
-  scroll.appendChild(btnAll);
+  // header
+  const hdr=document.createElement('div');
+  hdr.className='phase-header';
+  hdr.style.background=`linear-gradient(135deg,${fase.cor}dd,${fase.cor})`;
+  const feitos=fase.topicos.filter(t=>progress[t.id]).length;
+  const pct=Math.round(feitos/fase.topicos.length*100);
+  hdr.innerHTML=`<div class="ph-inner">
+    <div class="ph-tag">FASE ${fase.fase} · ${fase.semanas}</div>
+    <div class="ph-title">${fase.icon} ${fase.titulo}</div>
+    <div class="ph-sub">${feitos} de ${fase.topicos.length} tópicos concluídos</div>
+    <div class="ph-prog-row">
+      <div class="ph-barra-fundo"><div class="ph-barra-fill" id="ph-bar-${fase.fase}" style="width:${pct}%"></div></div>
+      <div class="ph-pct" id="ph-pct-${fase.fase}">${pct}%</div>
+    </div>
+  </div>`;
+  cont.appendChild(hdr);
 
-  semanas.forEach(s => {
-    const btn = document.createElement("button");
-    btn.className = "filtro-btn" + (filtroSemana === s ? " ativo" : "");
-    btn.textContent = "S" + s;
-    btn.addEventListener("click", () => { filtroSemana = s; render(); });
-    scroll.appendChild(btn);
-  });
-}
+  // topics
+  const section=document.createElement('div');
+  section.className='topics-section';
 
-function renderCorpo() {
-  const corpo = document.getElementById("corpo");
-  corpo.innerHTML = "";
+  // group by semana
+  const sems=[...new Set(fase.topicos.map(t=>t.semana))];
+  sems.forEach(sem=>{
+    const lbl=document.createElement('div');
+    lbl.style.cssText='font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;';
+    lbl.textContent='Semana '+sem;
+    section.appendChild(lbl);
 
-  if (filtroSemana !== null) {
-    const view = document.createElement("div");
-    view.className = "semana-view";
-    const titulo = document.createElement("div");
-    titulo.className = "semana-titulo";
-    titulo.textContent = "Semana " + filtroSemana;
-    view.appendChild(titulo);
-    ROADMAP.forEach(fase => {
-      fase.topicos.filter(t => t.semana === filtroSemana).forEach(t => {
-        view.appendChild(criarTopicoEl(t, fase.cor, true, fase.titulo));
-      });
+    fase.topicos.filter(t=>t.semana===sem).forEach(topico=>{
+      section.appendChild(buildTopicCard(topico,fase.cor));
     });
-    corpo.appendChild(view);
-    return;
+  });
+
+  cont.appendChild(section);
+  cont.appendChild(Object.assign(document.createElement('footer'),{textContent:'Fase '+fase.fase+' — '+fase.titulo}));
+}
+
+function buildTopicCard(topico,cor){
+  const done=!!progress[topico.id];
+  const doneCount=stepsDoneCount(topico.id);
+
+  const card=document.createElement('div');
+  card.className='topic-card'+(done?' done':'');
+  card.id='tc-'+topico.id;
+
+  // header
+  const hdr=document.createElement('button');
+  hdr.className='topic-header';
+  hdr.style.borderLeftColor=done?cor:'transparent';
+
+  const chk=document.createElement('div');
+  chk.className='th-check';
+  chk.style.background=done?cor:'transparent';
+  chk.style.borderColor=done?cor:'var(--border)';
+  chk.textContent=done?'✓':'';
+
+  const body=document.createElement('div'); body.className='th-body';
+  const semLbl=document.createElement('div'); semLbl.className='th-semana'; semLbl.style.color=cor; semLbl.textContent='SEMANA '+topico.semana;
+  const titulo=document.createElement('div'); titulo.className='th-titulo'; titulo.textContent=topico.titulo;
+  body.appendChild(semLbl); body.appendChild(titulo);
+
+  const right=document.createElement('div'); right.className='th-right';
+  const badge=document.createElement('div'); badge.className='th-prog-badge';
+  badge.textContent=doneCount+'/'+topico.steps.length;
+  if(done){ badge.style.background=cor+'22'; badge.style.color=cor; }
+  const arrow=document.createElement('div'); arrow.className='th-arrow'; arrow.textContent='›';
+  right.appendChild(badge); right.appendChild(arrow);
+
+  hdr.appendChild(chk); hdr.appendChild(body); hdr.appendChild(right);
+
+  // body
+  const tbody=document.createElement('div'); tbody.className='topic-body';
+
+  // steps
+  const stepsList=document.createElement('div'); stepsList.className='subtopic-steps';
+  topico.steps.forEach((step,i)=>{
+    const stepEl=buildStepEl(topico,i,cor);
+    stepsList.appendChild(stepEl);
+  });
+  tbody.appendChild(stepsList);
+
+  // resources
+  if(topico.recursos&&topico.recursos.length){
+    const rtitle=document.createElement('div'); rtitle.className='resources-title'; rtitle.textContent='RECURSOS';
+    const rlist=document.createElement('div'); rlist.className='resources-list';
+    topico.recursos.forEach(r=>{
+      const a=document.createElement('a');
+      a.className='resource-link'; a.href=r.url; a.target='_blank'; a.rel='noopener noreferrer';
+      const icon=r.tipo==='YouTube'?'▶️':r.tipo==='Docs'?'📄':r.tipo==='Artigo'?'📰':r.tipo==='Curso'?'🎓':r.tipo==='Prática'?'💪':r.tipo==='GitHub'?'🐙':r.tipo==='Dados'?'🗃️':r.tipo==='Comunidade'?'👥':r.tipo==='Vagas'?'💼':'🔗';
+      a.innerHTML=`<span class="rl-icon">${icon}</span><div class="rl-body"><div class="rl-type">${r.tipo.toUpperCase()}</div><div class="rl-name">${r.nome}</div></div><span class="rl-arrow">↗</span>`;
+      rlist.appendChild(a);
+    });
+    tbody.appendChild(rtitle); tbody.appendChild(rlist);
   }
 
-  ROADMAP.forEach(fase => {
-    const card = document.createElement("div");
-    card.className = "fase-card";
+  // toggle
+  let open=false;
+  hdr.addEventListener('click',()=>{
+    open=!open;
+    tbody.className='topic-body'+(open?' open':'');
+    arrow.className='th-arrow'+(open?' open':'');
+  });
 
-    const header = document.createElement("button");
-    header.className = "fase-header";
-    header.style.borderLeftColor = fase.cor;
+  card.appendChild(hdr); card.appendChild(tbody);
+  return card;
+}
 
-    const feitos = fase.topicos.filter(t => progress[t.id]).length;
-    const pct = Math.round((feitos / fase.topicos.length) * 100);
-    const aberta = faseAberta === fase.fase;
+function buildStepEl(topico,stepIdx,cor){
+  const step=topico.steps[stepIdx];
+  const done=isStepDone(topico.id,stepIdx);
+  const el=document.createElement('button');
+  el.className='step-item'+(done?' done':'');
+  el.id='step-'+topico.id+'-'+stepIdx;
+  if(done) el.style.borderLeftColor=cor;
 
-    header.innerHTML = `
-      <div class="fase-esq">
-        <div class="fase-num" style="color:${fase.cor}">FASE ${fase.fase}</div>
-        <div class="fase-titulo">${fase.titulo}</div>
-        <div class="fase-semanas">${fase.semanas}</div>
+  const chk=document.createElement('div'); chk.className='step-check';
+  chk.style.background=done?cor:'transparent';
+  chk.style.borderColor=done?cor:'var(--border)';
+  chk.textContent=done?'✓':'';
+
+  const content=document.createElement('div'); content.className='step-content';
+  const lbl=document.createElement('div'); lbl.className='step-label'; lbl.style.color=done?cor:'var(--muted)'; lbl.textContent=step.label;
+  const desc=document.createElement('div'); desc.className='step-desc'; desc.textContent=step.desc;
+  content.appendChild(lbl); content.appendChild(desc);
+
+  el.appendChild(chk); el.appendChild(content);
+  el.addEventListener('click',()=>toggleStep(topico.id,stepIdx,topico.steps.length,cor));
+  return el;
+}
+
+// ── RENDER HOME PHASES ────────────────────────────────────────────────────────
+function buildHomePhasesGrid(){
+  const grid=document.getElementById('phases-grid');
+  grid.innerHTML='';
+  ROADMAP.forEach(fase=>{
+    const feitos=fase.topicos.filter(t=>progress[t.id]).length;
+    const pct=Math.round(feitos/fase.topicos.length*100);
+    const card=document.createElement('div');
+    card.className='phase-card';
+    card.style.borderLeftColor=fase.cor;
+    card.innerHTML=`
+      <div class="pc-icon">${fase.icon}</div>
+      <div class="pc-body">
+        <div class="pc-fase" style="color:${fase.cor}">FASE ${fase.fase}</div>
+        <div class="pc-titulo">${fase.titulo}</div>
+        <div class="pc-semanas">${fase.semanas} · ${fase.topicos.length} tópicos</div>
       </div>
-      <div class="fase-dir">
-        <div class="fase-pct" id="fase-pct-${fase.fase}" style="color:${fase.cor}">${pct}%</div>
-        <div class="mini-barra-fundo">
-          <div class="mini-barra-fill" id="fase-bar-${fase.fase}" style="width:${pct}%;background:${fase.cor}"></div>
-        </div>
-        <div class="chevron ${aberta ? 'aberto' : ''}">▼</div>
-      </div>
-    `;
-
-    const corpo2 = document.createElement("div");
-    corpo2.className = "fase-corpo" + (aberta ? "" : " hidden");
-
-    const semanasUnicas = [...new Set(fase.topicos.map(t => t.semana))];
-    semanasUnicas.forEach(sem => {
-      const label = document.createElement("div");
-      label.className = "sem-grupo-label";
-      label.textContent = "Semana " + sem;
-      corpo2.appendChild(label);
-      fase.topicos.filter(t => t.semana === sem).forEach(t => {
-        corpo2.appendChild(criarTopicoEl(t, fase.cor, false, ""));
-      });
-    });
-
-    header.addEventListener("click", () => {
-      faseAberta = faseAberta === fase.fase ? null : fase.fase;
-      render();
-    });
-
-    card.appendChild(header);
-    card.appendChild(corpo2);
-    corpo.appendChild(card);
+      <div class="pc-right">
+        <div class="pc-pct" id="pc-pct-${fase.fase}" style="color:${fase.cor}">${pct}%</div>
+        <div class="pc-mini-barra"><div class="pc-mini-fill" id="pc-bar-${fase.fase}" style="width:${pct}%;background:${fase.cor}"></div></div>
+        <div class="pc-arrow">›</div>
+      </div>`;
+    card.addEventListener('click',()=>irPara(fase.fase));
+    grid.appendChild(card);
   });
 }
 
-function render() {
-  renderFiltro();
-  renderCorpo();
-  atualizarProgresso();
-}
-
-render();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+ROADMAP.forEach(fase=>buildPhasePage(fase));
+buildHomePhasesGrid();
+renderNavDots();
+updateNavBtns();
+atualizarTudo();
+if(!dataInicio) abrirModal();
 </script>
 </body>
 </html>
-
