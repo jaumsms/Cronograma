@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Data Engineer Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --bg2: #0d0d18;
+    --bg3: #111118;
+    --border: #1a1a2e;
+    --text: #ddd;
+    --muted: #555;
+    --muted2: #444;
+    --c1: #00D4AA;
+    --c2: #FF6B35;
+    --c3: #7C6FFF;
+    --c4: #F7C948;
+    --c5: #FF4D6D;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 48px 24px 32px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(160deg, #0d0d1a 0%, var(--bg) 60%);
+  }
+  .header-inner { max-width: 720px; margin: 0 auto; }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: .2em;
+    color: var(--c1);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: clamp(32px, 7vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    letter-spacing: -.02em;
+    margin-bottom: 12px;
+  }
+  h1 span { color: var(--c1); }
+
+  .subtitulo {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: .05em;
+    margin-bottom: 28px;
+  }
+
+  /* PROGRESSO GERAL */
+  .prog-box {
+    background: var(--bg3);
+    border: 1px solid #1f1f35;
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .prog-topo { display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .prog-label { font-size: 11px; color: var(--muted); letter-spacing: .1em; }
+  .prog-pct { font-size: 22px; font-weight: 800; color: #fff; }
+  .barra-fundo { height: 6px; background: #1e1e2e; border-radius: 99px; overflow: hidden; }
+  .barra-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--c1), var(--c3), var(--c5));
+    transition: width .5s ease;
+  }
+  .prog-sub { font-size: 11px; color: var(--muted2); margin-top: 8px; }
+
+  /* FILTRO */
+  .filtro-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .filtro-label { font-size: 11px; color: var(--muted); letter-spacing: .1em; flex-shrink: 0; }
+  .filtro-scroll { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filtro-btn {
+    background: var(--bg3);
+    border: 1px solid #222;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .2s;
+  }
+  .filtro-btn.ativo {
+    background: #00D4AA22;
+    border-color: var(--c1);
+    color: var(--c1);
+  }
+
+  /* CORPO */
+  .corpo {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 24px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* FASE CARD */
+  .fase-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .fase-header {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-left: 4px solid;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    font-family: inherit;
+    gap: 12px;
+    transition: background .2s;
+  }
+  .fase-header:hover { background: rgba(255,255,255,.02); }
+  .fase-esq { flex: 1; }
+  .fase-num { font-size: 10px; font-weight: 800; letter-spacing: .2em; margin-bottom: 4px; }
+  .fase-titulo { font-size: 15px; font-weight: 700; color: #eee; margin-bottom: 2px; font-family: 'IBM Plex Sans', sans-serif; }
+  .fase-semanas { font-size: 11px; color: var(--muted); }
+  .fase-dir { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 64px; }
+  .fase-pct { font-size: 18px; font-weight: 800; }
+  .mini-barra-fundo { width: 60px; height: 4px; background: #1e1e2e; border-radius: 99px; overflow: hidden; }
+  .mini-barra-fill { height: 100%; border-radius: 99px; transition: width .4s ease; }
+  .chevron { font-size: 10px; color: var(--muted); transition: transform .3s ease; }
+  .chevron.aberto { transform: rotate(180deg); }
+
+  /* CORPO DA FASE */
+  .fase-corpo { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .fase-corpo.hidden { display: none; }
+  .sem-grupo-label {
+    font-size: 10px;
+    color: var(--muted2);
+    letter-spacing: .15em;
+    font-weight: 700;
+    margin: 12px 0 4px 4px;
+  }
+
+  /* TÓPICO ITEM */
+  .topico-item {
+    width: 100%;
+    background: rgba(255,255,255,.03);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    font-family: inherit;
+    transition: all .2s ease;
+    margin-bottom: 4px;
+  }
+  .topico-item:hover { background: rgba(255,255,255,.06); }
+  .topico-item.feito { border-left-width: 3px; border-left-style: solid; }
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all .2s;
+    font-size: 11px;
+    font-weight: 900;
+    color: #000;
+  }
+  .topico-texto { font-size: 13px; line-height: 1.5; color: #ddd; transition: all .2s; }
+  .topico-item.feito .topico-texto { text-decoration: line-through; color: #555; }
+  .topico-fase-label { font-size: 10px; letter-spacing: .1em; font-weight: 700; margin-bottom: 2px; }
+
+  /* SEMANA VIEW */
+  .semana-view { display: flex; flex-direction: column; gap: 8px; }
+  .semana-titulo { font-size: 12px; color: var(--muted); letter-spacing: .15em; font-weight: 700; margin-bottom: 8px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    font-size: 10px;
+    color: #333;
+    padding: 0 24px 32px;
+    letter-spacing: .1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="tag">6 MESES · ANALISTA → ENGENHEIRO DE DADOS</div>
+    <h1>Data Engineer<br><span>Roadmap</span></h1>
+    <p class="subtitulo">S&OP Analyst → Data Engineer · AWS · Pipelines · Spark</p>
+    <div class="prog-box">
+      <div class="prog-topo">
+        <span class="prog-label">PROGRESSO GERAL</span>
+        <span class="prog-pct" id="pct-geral">0%</span>
+      </div>
+      <div class="barra-fundo"><div class="barra-fill" id="barra-geral" style="width:0%"></div></div>
+      <div class="prog-sub" id="prog-sub">0 de 44 tópicos concluídos</div>
+    </div>
+  </div>
+</div>
+
+<div class="filtro-wrapper">
+  <span class="filtro-label">Filtrar por semana:</span>
+  <div class="filtro-scroll" id="filtro-scroll"></div>
+</div>
+
+<div class="corpo" id="corpo"></div>
+
+<footer>Construído para a sua jornada · Analista S&OP → Engenheiro de Dados</footer>
+
+<script>
+const COR = ["#00D4AA","#FF6B35","#7C6FFF","#F7C948","#FF4D6D"];
+
+const ROADMAP = [
+  {
+    fase:1, titulo:"Fundamentos de Engenharia de Dados", semanas:"Semanas 1–3", cor:COR[0],
+    topicos:[
+      {id:"1-1",semana:1,titulo:"Modelagem de dados (Star Schema, Snowflake)"},
+      {id:"1-2",semana:1,titulo:"Data Warehouse vs Data Lake vs Lakehouse"},
+      {id:"1-3",semana:2,titulo:"Conceitos de ETL/ELT e pipelines de dados"},
+      {id:"1-4",semana:2,titulo:"Formatos de arquivo: Parquet, Avro, ORC, JSON"},
+      {id:"1-5",semana:3,titulo:"SQL avançado: CTEs, Window Functions, Partitioning"},
+      {id:"1-6",semana:3,titulo:"Python para dados: Pandas avançado, type hints, virtual envs"},
+    ]
+  },
+  {
+    fase:2, titulo:"Cloud — AWS para Engenharia de Dados", semanas:"Semanas 4–8", cor:COR[1],
+    topicos:[
+      {id:"2-1",semana:4,titulo:"IAM, S3, VPC — fundamentos de cloud"},
+      {id:"2-2",semana:4,titulo:"AWS S3 como Data Lake: particionamento e lifecycle"},
+      {id:"2-3",semana:5,titulo:"AWS Glue: Crawlers, Data Catalog e ETL Jobs"},
+      {id:"2-4",semana:5,titulo:"Amazon Athena: SQL sobre S3 com Presto"},
+      {id:"2-5",semana:6,titulo:"AWS Redshift: configuração, COPY, distribuição"},
+      {id:"2-6",semana:6,titulo:"RDS e DynamoDB — quando usar cada um"},
+      {id:"2-7",semana:7,titulo:"AWS Lambda para pipelines serverless"},
+      {id:"2-8",semana:7,titulo:"Amazon Kinesis: streaming de dados em tempo real"},
+      {id:"2-9",semana:8,titulo:"Simulado e revisão para AWS Cloud Practitioner"},
+      {id:"2-10",semana:8,titulo:"Projeto prático: pipeline S3 → Glue → Athena → QuickSight"},
+    ]
+  },
+  {
+    fase:3, titulo:"Pipelines & Orquestração", semanas:"Semanas 9–14", cor:COR[2],
+    topicos:[
+      {id:"3-1",semana:9,titulo:"Apache Airflow: DAGs, Operators, XComs"},
+      {id:"3-2",semana:9,titulo:"dbt (data build tool): models, tests, lineage"},
+      {id:"3-3",semana:10,titulo:"dbt avançado: macros, snapshots, seeds"},
+      {id:"3-4",semana:10,titulo:"Qualidade de dados: Great Expectations"},
+      {id:"3-5",semana:11,titulo:"Docker para engenharia de dados"},
+      {id:"3-6",semana:11,titulo:"Containers na AWS: ECS e ECR básico"},
+      {id:"3-7",semana:12,titulo:"CI/CD para pipelines: GitHub Actions"},
+      {id:"3-8",semana:12,titulo:"Infrastructure as Code: Terraform básico para AWS"},
+      {id:"3-9",semana:13,titulo:"Projeto: pipeline Airflow + dbt + S3 + Redshift"},
+      {id:"3-10",semana:14,titulo:"Code review do projeto + documentação"},
+    ]
+  },
+  {
+    fase:4, titulo:"Spark & Processamento Distribuído", semanas:"Semanas 15–20", cor:COR[3],
+    topicos:[
+      {id:"4-1",semana:15,titulo:"Fundamentos do Apache Spark: RDD, DataFrame, Dataset"},
+      {id:"4-2",semana:15,titulo:"PySpark: transformações, ações e lazy evaluation"},
+      {id:"4-3",semana:16,titulo:"Spark SQL e integração com Hive Metastore"},
+      {id:"4-4",semana:16,titulo:"Otimização: particionamento, cache, broadcast joins"},
+      {id:"4-5",semana:17,titulo:"Spark Streaming e Structured Streaming"},
+      {id:"4-6",semana:17,titulo:"Delta Lake: ACID transactions sobre Spark"},
+      {id:"4-7",semana:18,titulo:"AWS EMR: cluster Spark gerenciado na nuvem"},
+      {id:"4-8",semana:18,titulo:"Databricks Community Edition: notebooks e workflows"},
+      {id:"4-9",semana:19,titulo:"Projeto: pipeline Spark no EMR com Delta Lake"},
+      {id:"4-10",semana:20,titulo:"Revisão geral + simulado AWS Data Engineer Associate"},
+    ]
+  },
+  {
+    fase:5, titulo:"Portfólio & Transição", semanas:"Semanas 21–24", cor:COR[4],
+    topicos:[
+      {id:"5-1",semana:21,titulo:"GitHub: organizar projetos com README profissional"},
+      {id:"5-2",semana:21,titulo:"Projeto final integrador: end-to-end pipeline completo"},
+      {id:"5-3",semana:22,titulo:"LinkedIn: reposicionamento de perfil para DE"},
+      {id:"5-4",semana:22,titulo:"Preparação para entrevistas técnicas de DE"},
+      {id:"5-5",semana:23,titulo:"Mock interviews: SQL avançado e system design"},
+      {id:"5-6",semana:23,titulo:"Networking: comunidades (Data Hackers, Slack groups)"},
+      {id:"5-7",semana:24,titulo:"Revisão final do portfólio e candidaturas ativas"},
+      {id:"5-8",semana:24,titulo:"🎯 Meta: primeira vaga como Engenheiro de Dados"},
+    ]
+  },
+];
+
+const STORAGE_KEY = "de_roadmap_v1";
+let progress = {};
+try { progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch {}
+
+let filtroSemana = null;
+let faseAberta = 1;
+
+function salvar() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch {}
+}
+
+function totalFeitos() {
+  return ROADMAP.flatMap(f => f.topicos).filter(t => progress[t.id]).length;
+}
+function totalItens() {
+  return ROADMAP.flatMap(f => f.topicos).length;
+}
+
+function atualizarProgresso() {
+  const feitos = totalFeitos();
+  const total = totalItens();
+  const pct = Math.round((feitos / total) * 100);
+  document.getElementById("pct-geral").textContent = pct + "%";
+  document.getElementById("barra-geral").style.width = pct + "%";
+  document.getElementById("prog-sub").textContent = feitos + " de " + total + " tópicos concluídos";
+
+  // Mini barras por fase
+  ROADMAP.forEach(fase => {
+    const feitos = fase.topicos.filter(t => progress[t.id]).length;
+    const pct = Math.round((feitos / fase.topicos.length) * 100);
+    const pctEl = document.getElementById("fase-pct-" + fase.fase);
+    const barEl = document.getElementById("fase-bar-" + fase.fase);
+    if (pctEl) pctEl.textContent = pct + "%";
+    if (barEl) barEl.style.width = pct + "%";
+  });
+}
+
+function toggleItem(id) {
+  progress[id] = !progress[id];
+  salvar();
+  const btn = document.querySelector(`[data-id="${id}"]`);
+  if (!btn) return;
+  const cor = btn.dataset.cor;
+  const checkBox = btn.querySelector(".check-box");
+  const texto = btn.querySelector(".topico-texto");
+  if (progress[id]) {
+    btn.classList.add("feito");
+    btn.style.borderLeftColor = cor;
+    btn.style.background = cor + "12";
+    checkBox.style.background = cor;
+    checkBox.style.borderColor = cor;
+    checkBox.textContent = "✓";
+    texto.style.textDecoration = "line-through";
+    texto.style.color = "#555";
+  } else {
+    btn.classList.remove("feito");
+    btn.style.borderLeftColor = "transparent";
+    btn.style.background = "rgba(255,255,255,0.03)";
+    checkBox.style.background = "transparent";
+    checkBox.style.borderColor = "#444";
+    checkBox.textContent = "";
+    texto.style.textDecoration = "none";
+    texto.style.color = "#ddd";
+  }
+  atualizarProgresso();
+}
+
+function criarTopicoEl(topico, cor, showFase, faseTitulo) {
+  const btn = document.createElement("button");
+  btn.className = "topico-item" + (progress[topico.id] ? " feito" : "");
+  btn.dataset.id = topico.id;
+  btn.dataset.cor = cor;
+
+  const feito = !!progress[topico.id];
+  if (feito) {
+    btn.style.borderLeftColor = cor;
+    btn.style.background = cor + "12";
+  }
+
+  const check = document.createElement("div");
+  check.className = "check-box";
+  check.style.borderColor = feito ? cor : "#444";
+  check.style.background = feito ? cor : "transparent";
+  check.textContent = feito ? "✓" : "";
+
+  const textoWrapper = document.createElement("div");
+
+  if (showFase) {
+    const faseLabel = document.createElement("div");
+    faseLabel.className = "topico-fase-label";
+    faseLabel.style.color = cor;
+    faseLabel.textContent = faseTitulo;
+    textoWrapper.appendChild(faseLabel);
+  }
+
+  const texto = document.createElement("div");
+  texto.className = "topico-texto";
+  texto.textContent = topico.titulo;
+  if (feito) { texto.style.textDecoration = "line-through"; texto.style.color = "#555"; }
+  textoWrapper.appendChild(texto);
+
+  btn.appendChild(check);
+  btn.appendChild(textoWrapper);
+  btn.addEventListener("click", () => toggleItem(topico.id));
+  return btn;
+}
+
+function renderFiltro() {
+  const scroll = document.getElementById("filtro-scroll");
+  scroll.innerHTML = "";
+
+  const semanas = [...new Set(ROADMAP.flatMap(f => f.topicos.map(t => t.semana)))].sort((a,b)=>a-b);
+
+  const btnAll = document.createElement("button");
+  btnAll.className = "filtro-btn" + (filtroSemana === null ? " ativo" : "");
+  btnAll.textContent = "Todas";
+  btnAll.addEventListener("click", () => { filtroSemana = null; render(); });
+  scroll.appendChild(btnAll);
+
+  semanas.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "filtro-btn" + (filtroSemana === s ? " ativo" : "");
+    btn.textContent = "S" + s;
+    btn.addEventListener("click", () => { filtroSemana = s; render(); });
+    scroll.appendChild(btn);
+  });
+}
+
+function renderCorpo() {
+  const corpo = document.getElementById("corpo");
+  corpo.innerHTML = "";
+
+  if (filtroSemana !== null) {
+    const view = document.createElement("div");
+    view.className = "semana-view";
+    const titulo = document.createElement("div");
+    titulo.className = "semana-titulo";
+    titulo.textContent = "Semana " + filtroSemana;
+    view.appendChild(titulo);
+    ROADMAP.forEach(fase => {
+      fase.topicos.filter(t => t.semana === filtroSemana).forEach(t => {
+        view.appendChild(criarTopicoEl(t, fase.cor, true, fase.titulo));
+      });
+    });
+    corpo.appendChild(view);
+    return;
+  }
+
+  ROADMAP.forEach(fase => {
+    const card = document.createElement("div");
+    card.className = "fase-card";
+
+    // Header
+    const header = document.createElement("button");
+    header.className = "fase-header";
+    header.style.borderLeftColor = fase.cor;
+
+    const feitos = fase.topicos.filter(t => progress[t.id]).length;
+    const pct = Math.round((feitos / fase.topicos.length) * 100);
+    const aberta = faseAberta === fase.fase;
+
+    header.innerHTML = `
+      <div class="fase-esq">
+        <div class="fase-num" style="color:${fase.cor}">FASE ${fase.fase}</div>
+        <div class="fase-titulo">${fase.titulo}</div>
+        <div class="fase-semanas">${fase.semanas}</div>
+      </div>
+      <div class="fase-dir">
+        <div class="fase-pct" id="fase-pct-${fase.fase}" style="color:${fase.cor}">${pct}%</div>
+        <div class="mini-barra-fundo">
+          <div class="mini-barra-fill" id="fase-bar-${fase.fase}" style="width:${pct}%;background:${fase.cor}"></div>
+        </div>
+        <div class="chevron ${aberta ? 'aberto' : ''}">▼</div>
+      </div>
+    `;
+
+    // Corpo
+    const corpo2 = document.createElement("div");
+    corpo2.className = "fase-corpo" + (aberta ? "" : " hidden");
+
+    const semanasUnicas = [...new Set(fase.topicos.map(t => t.semana))];
+    semanasUnicas.forEach(sem => {
+      const label = document.createElement("div");
+      label.className = "sem-grupo-label";
+      label.textContent = "Semana " + sem;
+      corpo2.appendChild(label);
+      fase.topicos.filter(t => t.semana === sem).forEach(t => {
+        corpo2.appendChild(criarTopicoEl(t, fase.cor, false, ""));
+      });
+    });
+
+    header.addEventListener("click", () => {
+      faseAberta = faseAberta === fase.fase ? null : fase.fase;
+      render();
+    });
+
+    card.appendChild(header);
+    card.appendChild(corpo2);
+    corpo.appendChild(card);
+  });
+}
+
+function render() {
+  renderFiltro();
+  renderCorpo();
+  atualizarProgresso();
+}
+
+render();
+</script>
+</body>
+</html>
